@@ -20,22 +20,6 @@ export default [
     },
   },
   {
-    path: '/pages/authentication/login-v1',
-    name: 'auth-login-v1',
-    component: () => import('@/views/pages/authentication/Login-v1.vue'),
-    meta: {
-      layout: 'full',
-    },
-  },
-  {
-    path: '/pages/authentication/login-v2',
-    name: 'auth-login-v2',
-    component: () => import('@/views/pages/authentication/Login-v2.vue'),
-    meta: {
-      layout: 'full',
-    },
-  },
-  {
     path: '/register',
     name: 'auth-register',
     component: () => import('@/views/pages/authentication/Register.vue'),
@@ -252,71 +236,6 @@ export default [
         },
       ],
       navActiveLink: 'pages-knowledge-base',
-    },
-  },
-  {
-    path: '/pages/pricing',
-    name: 'pages-pricing',
-    component: () => import('@/views/pages/pricing/Pricing.vue'),
-  },
-  {
-    path: '/pages/blog/list',
-    name: 'pages-blog-list',
-    component: () => import('@/views/pages/blog/BlogList.vue'),
-    meta: {
-      pageTitle: 'Blog List',
-      breadcrumb: [
-        {
-          text: 'Pages',
-        },
-        {
-          text: 'Blog',
-        },
-        {
-          text: 'List',
-          active: true,
-        },
-      ],
-    },
-  },
-  {
-    path: '/pages/blog/:id',
-    name: 'pages-blog-detail',
-    component: () => import('@/views/pages/blog/BlogDetail.vue'),
-    meta: {
-      pageTitle: 'Blog Detail',
-      breadcrumb: [
-        {
-          text: 'Pages',
-        },
-        {
-          text: 'Blog',
-        },
-        {
-          text: 'Detail',
-          active: true,
-        },
-      ],
-    },
-  },
-  {
-    path: '/pages/blog/edit/:id',
-    name: 'pages-blog-edit',
-    component: () => import('@/views/pages/blog/BlogEdit.vue'),
-    meta: {
-      pageTitle: 'Blog Edit',
-      breadcrumb: [
-        {
-          text: 'Pages',
-        },
-        {
-          text: 'Blog',
-        },
-        {
-          text: 'Edit',
-          active: true,
-        },
-      ],
     },
   },
 ]

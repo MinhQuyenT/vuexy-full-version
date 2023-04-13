@@ -4,7 +4,7 @@
     :class="{'open': isCustomizerOpen}"
   >
     <!-- Toggler -->
-    <b-link
+    <!-- <b-link
       class="customizer-toggle d-flex align-items-center justify-content-center"
       @click="isCustomizerOpen = !isCustomizerOpen"
     >
@@ -13,7 +13,7 @@
         size="15"
         class="spinner"
       />
-    </b-link>
+    </b-link> -->
     <!-- /Toggler -->
 
     <!-- Header -->
@@ -38,14 +38,14 @@
 
 <script>
 import {
-  BLink,
+  // BLink,
 } from 'bootstrap-vue'
 import useAppCustomizer from './useAppCustomizer'
 
 export default {
   components: {
     // BSV
-    BLink,
+    // BLink,
 
     // 3rd party
 

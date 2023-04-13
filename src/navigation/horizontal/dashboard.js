@@ -3,14 +3,14 @@ export default [
     header: 'Dashboards',
     icon: 'HomeIcon',
     children: [
+      // {
+      //   title: 'eCommerce',
+      //   route: 'dashboard-ecommerce',
+      //   icon: 'ShoppingCartIcon',
+      // },
       {
-        title: 'eCommerce',
+        title: 'Trang Chủ',
         route: 'dashboard-ecommerce',
-        icon: 'ShoppingCartIcon',
-      },
-      {
-        title: 'Analytics',
-        route: 'dashboard-analytics',
         icon: 'ActivityIcon',
       },
     ],

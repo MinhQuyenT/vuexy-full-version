@@ -1,11 +1,11 @@
 <template>
   <section id="dashboard-analytics">
-    <b-row class="match-height">
-      <b-col
+    <!-- <b-row class="match-height"> -->
+      <!-- <b-col
         lg="6"
         md="12"
       >
-        <analytics-congratulation :data="data.congratulations" />
+         <analytics-congratulation :data="data.congratulations" /> 
       </b-col>
       <b-col
         lg="3"
@@ -53,7 +53,7 @@
       <b-col lg="4">
         <analytics-app-design :data="data.appDesign" />
       </b-col>
-    </b-row>
+    </b-row> -->
 
     <b-row>
       <b-col cols="12">
@@ -66,27 +66,27 @@
 <script>
 import { BRow, BCol } from 'bootstrap-vue'
 
-import StatisticCardWithAreaChart from '@core/components/statistics-cards/StatisticCardWithAreaChart.vue'
+// import StatisticCardWithAreaChart from '@core/components/statistics-cards/StatisticCardWithAreaChart.vue'
 import { kFormatter } from '@core/utils/filter'
 import InvoiceList from '@/views/apps/invoice/invoice-list/InvoiceList.vue'
-import AnalyticsCongratulation from './AnalyticsCongratulation.vue'
-import AnalyticsAvgSessions from './AnalyticsAvgSessions.vue'
-import AnalyticsSupportTracker from './AnalyticsSupportTracker.vue'
-import AnalyticsTimeline from './AnalyticsTimeline.vue'
-import AnalyticsSalesRadarChart from './AnalyticsSalesRadarChart.vue'
-import AnalyticsAppDesign from './AnalyticsAppDesign.vue'
+// import AnalyticsCongratulation from './AnalyticsCongratulation.vue'
+// import AnalyticsAvgSessions from './AnalyticsAvgSessions.vue'
+// import AnalyticsSupportTracker from './AnalyticsSupportTracker.vue'
+// import AnalyticsTimeline from './AnalyticsTimeline.vue'
+// import AnalyticsSalesRadarChart from './AnalyticsSalesRadarChart.vue'
+// import AnalyticsAppDesign from './AnalyticsAppDesign.vue'
 
 export default {
   components: {
     BRow,
     BCol,
-    AnalyticsCongratulation,
-    AnalyticsAvgSessions,
-    StatisticCardWithAreaChart,
-    AnalyticsSupportTracker,
-    AnalyticsTimeline,
-    AnalyticsSalesRadarChart,
-    AnalyticsAppDesign,
+    // AnalyticsCongratulation,
+    // AnalyticsAvgSessions,
+    // StatisticCardWithAreaChart,
+    // AnalyticsSupportTracker,
+    // AnalyticsTimeline,
+    // AnalyticsSalesRadarChart,
+    // AnalyticsAppDesign,
     InvoiceList,
   },
   data() {
