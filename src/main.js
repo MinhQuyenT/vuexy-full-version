@@ -1,6 +1,13 @@
 import Vue from 'vue'
 import { ToastPlugin, ModalPlugin } from 'bootstrap-vue'
 import VueCompositionAPI from '@vue/composition-api'
+import lang from "element-ui/lib/locale/lang/en";
+import locale from "element-ui/lib/locale";
+import Avue from '@smallwei/avue'
+import '@smallwei/avue/lib/index.css'
+import ElementUI from "element-ui";
+import "element-ui/lib/theme-chalk/index.css";
+import axios from 'axios'
 
 import i18n from '@/libs/i18n'
 import router from './router'
@@ -23,9 +30,15 @@ import '@/libs/tour'
 // Axios Mock Adapter
 import '@/@fake-db/db'
 
+locale.use(lang);
+Vue.config.productionTip = false;
+Vue.use(ElementUI, { locale });
 // BSV Plugin Registration
 Vue.use(ToastPlugin)
 Vue.use(ModalPlugin)
+Vue.use(Avue)
+Vue.use(Avue, { axios })
+window.axios = axios
 
 // Composition API
 Vue.use(VueCompositionAPI)

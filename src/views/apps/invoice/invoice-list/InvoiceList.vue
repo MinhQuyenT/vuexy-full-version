@@ -63,9 +63,10 @@
     </div>
 
     <b-table
-      ref="refInvoiceListTable"
+      :select-mode="selectMode"
+      responsive="sm"
+      selectable
       :items="fetchInvoices"
-      responsive
       :fields="tableColumns"
       primary-key="id"
       :sort-by.sync="sortBy"
@@ -73,6 +74,8 @@
       empty-text="No matching records found"
       :sort-desc.sync="isSortDirDesc"
       class="position-relative"
+      @row-selected="onRowSelected"
+      ref="refInvoiceListTable"
     >
 
       <template #head(invoiceStatus)>
@@ -286,6 +289,20 @@ import useInvoicesList from './useInvoiceList'
 import invoiceStoreModule from '../invoiceStoreModule'
 
 export default {
+  data() {
+      return {
+        modes: ['multi', 'single', 'range'],
+        fields: ['selected', 'isActive', 'age', 'first_name', 'last_name'],
+       
+        selectMode: 'single',
+        selected: [],
+      }
+    },
+  methods: {
+    onRowSelected(items) {
+        this.selected = items
+      },
+  },
   components: {
     BCard,
     BRow,
@@ -372,6 +389,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.table.b-table > tbody > .table-active,  .table.b-table > tbody > .table-active > th,  .table.b-table > tbody > .table-active > td{
+  background-color: #bdf !important;
+}
+table#table-transition-example .flip-list-move {
+  transition: transform 1s;
+}
 .per-page-selector {
   width: 90px;
 }
