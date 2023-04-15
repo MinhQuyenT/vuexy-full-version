@@ -17,7 +17,7 @@ export function crudOp() {
     disabled: false,
     tree: true,
     labelWidth: 100,
-    height: "46vh",
+    height: "59vh",
     column: [
       {
         width: 120,
@@ -193,6 +193,7 @@ export function formOp2() {
       },
       {
         label: "Nghỉ Phép",
+        labelWidth:100,
         prop: "storeLocal",
         value: "",
         name: "storeLocal",
@@ -200,6 +201,7 @@ export function formOp2() {
       },
       {
         label: "Trạng Thái",
+        labelWidth:100,
         prop: "creator",
         value: "",
         name: "creator",
@@ -222,25 +224,23 @@ export function formOpSelect() {
     emptyBtn: false,
     fontSize: 8,
     menuBtn: false,
-    option: {
-      column: [
-       {
-          label: 'Phòng Ban',
-          prop: 'select',
-          type: 'select',
-          dicData: [
-          {
-            label: '字典1',
-            value: 0,
-          },
-          {
-            label: '字典2',
-            value: 1,
-          }],
-          value: 0,
-       },
-      ],
-    },
+    options: [{
+      value: 'Option1',
+      label: 'Option1'
+    }, {
+      value: 'Option2',
+      label: 'Option2'
+    }, {
+      value: 'Option3',
+      label: 'Option3'
+    }, {
+      value: 'Option4',
+      label: 'Option4'
+    }, {
+      value: 'Option5',
+      label: 'Option5'
+    }],
+    value: ''
   };
 }
 

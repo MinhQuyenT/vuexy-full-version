@@ -8,6 +8,7 @@ import '@smallwei/avue/lib/index.css'
 import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
 import axios from 'axios'
+import { VBTogglePlugin } from 'bootstrap-vue'
 
 import i18n from '@/libs/i18n'
 import router from './router'
@@ -38,6 +39,7 @@ Vue.use(ToastPlugin)
 Vue.use(ModalPlugin)
 Vue.use(Avue)
 Vue.use(Avue, { axios })
+Vue.use(VBTogglePlugin)
 window.axios = axios
 
 // Composition API
