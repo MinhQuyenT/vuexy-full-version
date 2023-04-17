@@ -81,20 +81,29 @@
     </div>
 
     <b-table
-      style="height: 480px;"
+      style="height: 450px"
+      table-style="width: max-content !important;"
       :select-mode="selectMode"
       selectable
-      responsive="md"
+      responsive
+      table-class=" text-nowrap"
       :fields="tableColumns"
       primary-key="id"
       :sort-by.sync="sortBy"
       show-empty
       empty-text="Không có dữ liệu"
       :sort-desc.sync="isSortDirDesc"
-      class="d-block"
+      class="d-block table-cus"
       @row-selected="onRowSelected"
       ref="refInvoiceListTable"
     >
+      <!-- <template #table-colgroup="scope">
+        <col
+          v-for="field in scope.fields"
+          :key="field.key"
+          :style="{ width: '200px' }"
+        />
+      </template> -->
     </b-table>
     <div class="mx-2 mb-2">
       <b-row>
@@ -163,7 +172,7 @@ import store from "@/store";
 import timekeepingDayList from "./TimekeepingDayList";
 // axios
 import axios from "axios";
-import  invoiceStoreModule from "../invoiceStoreModule";
+import invoiceStoreModule from "../invoiceStoreModule";
 
 export default {
   data() {
@@ -277,13 +286,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.table-responsive {
-  display: block;
-  width: 100%;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-}
-.table.b-table {
+/* Busy table styling */
+table.b-table[aria-busy="false"] {
   width: max-content !important;
 }
 .table.b-table > tbody > .table-active,
@@ -294,11 +298,11 @@ export default {
 table#table-transition-example .flip-list-move {
   transition: transform 1s;
 }
-.form-group{
-  margin-bottom: 0
+.form-group {
+  margin-bottom: 0;
 }
-.card-body{
-  padding: 0!important
+.card-body {
+  padding: 0 !important;
 }
 </style>
 
