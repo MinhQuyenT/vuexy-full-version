@@ -9,6 +9,8 @@ import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
 import axios from 'axios'
 import { VBTogglePlugin } from 'bootstrap-vue'
+import bootstrapvue from './bootstrapvue';
+
 
 import i18n from '@/libs/i18n'
 import router from './router'
@@ -32,6 +34,7 @@ import '@/libs/tour'
 import '@/@fake-db/db'
 
 locale.use(lang);
+Vue.use(bootstrapvue)
 Vue.config.productionTip = false;
 Vue.use(ElementUI, { locale });
 // BSV Plugin Registration
@@ -58,6 +61,7 @@ require('@/assets/scss/style.scss')
 Vue.config.productionTip = false
 
 new Vue({
+
   router,
   store,
   i18n,

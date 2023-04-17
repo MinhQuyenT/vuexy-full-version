@@ -1,7 +1,6 @@
 <template>
   <b-card-code title="Advance Search Table">
     <div class="custom-search">
-
       <!-- advance search input -->
       <b-row>
         <b-col md="4">
