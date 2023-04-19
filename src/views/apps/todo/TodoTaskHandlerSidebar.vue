@@ -1,88 +1,40 @@
 <template>
   <div>
-    <b-sidebar
-      id="sidebar-task-handler"
-      sidebar-class="sidebar-lg"
-      :visible="isTaskHandlerSidebarActive" 
-      bg-variant="white"
-      shadow
-      backdrop
-      no-header
-      right
-      @change="(val) => $emit('update:is-task-handler-sidebar-active', val)"
-      @hidden="clearForm"
-    >
+    <b-sidebar id="sidebar-task-handler" sidebar-class="sidebar-lg" :visible="isTaskHandlerSidebarActive"
+      bg-variant="white" shadow backdrop no-header right
+      @change="(val) => $emit('update:is-task-handler-sidebar-active', val)" @hidden="clearForm">
       <template #default="{ hide }">
         <!-- Header -->
         <div class="d-flex justify-content-between align-items-center content-sidebar-header px-2 py-1">
-          <b-button
-            v-if="taskLocal.id"
-            size="sm"
+          <b-button v-if="taskLocal.id" size="sm"
             :variant="taskLocal.isCompleted ? 'outline-success' : 'outline-secondary'"
-            @click="taskLocal.isCompleted = !taskLocal.isCompleted"
-          >
+            @click="taskLocal.isCompleted = !taskLocal.isCompleted">
             {{ taskLocal.isCompleted ? 'Completed' : 'Mark Complete' }}
           </b-button>
-          <h5
-            v-else
-            class="mb-0"
-          >
+          <h5 v-else class="mb-0">
             Add Task
           </h5>
           <div>
-            <feather-icon
-              v-show="taskLocal.id"
-              icon="TrashIcon"
-              class="cursor-pointer"
-              @click="$emit('remove-task'); hide();"
-            />
-            <feather-icon
-              class="ml-1 cursor-pointer"
-              icon="StarIcon"
-              size="16"
+            <feather-icon v-show="taskLocal.id" icon="TrashIcon" class="cursor-pointer"
+              @click="$emit('remove-task'); hide();" />
+            <feather-icon class="ml-1 cursor-pointer" icon="StarIcon" size="16"
               :class="{ 'text-warning': taskLocal.isImportant }"
-              @click="taskLocal.isImportant = !taskLocal.isImportant"
-            />
-            <feather-icon
-              class="ml-1 cursor-pointer"
-              icon="XIcon"
-              size="16"
-              @click="hide"
-            />
+              @click="taskLocal.isImportant = !taskLocal.isImportant" />
+            <feather-icon class="ml-1 cursor-pointer" icon="XIcon" size="16" @click="hide" />
           </div>
         </div>
 
         <!-- Body -->
-        <validation-observer
-          #default="{ handleSubmit }"
-          ref="refFormObserver"
-        >
+        <validation-observer #default="{ handleSubmit }" ref="refFormObserver">
 
           <!-- Form -->
-          <b-form
-            class="p-2"
-            @submit.prevent="handleSubmit(onSubmit)"
-            @reset.prevent="resetForm"
-          >
+          <b-form class="p-2" @submit.prevent="handleSubmit(onSubmit)" @reset.prevent="resetForm">
 
             <!-- Title -->
-            <validation-provider
-              #default="validationContext"
-              name="Title"
-              rules="required"
-            >
-              <b-form-group
-                label="Title"
-                label-for="task-title"
-              >
-                <b-form-input
-                  id="task-title"
-                  v-model="taskLocal.title"
-                  autofocus
-                  :state="getValidationState(validationContext)"
-                  trim
-                  placeholder="Task Title"
-                />
+            <validation-provider #default="validationContext" name="Title" rules="required">
+              <b-form-group label="Title" label-for="task-title">
+                <b-form-input id="task-title" v-model="taskLocal.title" autofocus
+                  :state="getValidationState(validationContext)" trim placeholder="Task Title" />
 
                 <b-form-invalid-feedback>
                   {{ validationContext.errors[0] }}
@@ -91,34 +43,18 @@
             </validation-provider>
 
             <!-- Assignee -->
-            <b-form-group
-              label="Assignee"
-              label-for="assignee"
-            >
-              <v-select
-                v-model="taskLocal.assignee"
-                :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-                :options="assigneeOptions"
-                label="fullName"
-                class="assignee-selector"
-                input-id="assignee"
-              >
+            <b-form-group label="Assignee" label-for="assignee">
+              <v-select v-model="taskLocal.assignee" :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                :options="assigneeOptions" label="fullName" class="assignee-selector" input-id="assignee">
 
                 <template #option="{ avatar, fullName }">
-                  <b-avatar
-                    size="26"
-                    :src="avatar"
-                  />
+                  <b-avatar size="26" :src="avatar" />
                   <span class="ml-50 d-inline-block align-middle"> {{ fullName }}</span>
                 </template>
 
                 <template #selected-option="{ avatar, fullName }">
-                  <b-avatar
-                    size="26"
-                    :src="avatar"
-                    :variant="`light-${resolveAvatarVariant(taskLocal.tags)}`"
-                    :text="avatarText(fullName)"
-                  />
+                  <b-avatar size="26" :src="avatar" :variant="`light-${resolveAvatarVariant(taskLocal.tags)}`"
+                    :text="avatarText(fullName)" />
 
                   <span class="ml-50 d-inline-block align-middle"> {{ fullName }}</span>
                 </template>
@@ -126,20 +62,10 @@
             </b-form-group>
 
             <!-- due Date -->
-            <validation-provider
-              #default="validationContext"
-              name="Due Date"
-              rules="required"
-            >
+            <validation-provider #default="validationContext" name="Due Date" rules="required">
 
-              <b-form-group
-                label="Due Date"
-                label-for="due-date"
-              >
-                <flat-pickr
-                  v-model="taskLocal.dueDate"
-                  class="form-control"
-                />
+              <b-form-group label="Due Date" label-for="due-date">
+                <flat-pickr v-model="taskLocal.dueDate" class="form-control" />
                 <b-form-invalid-feedback :state="getValidationState(validationContext)">
                   {{ validationContext.errors[0] }}
                 </b-form-invalid-feedback>
@@ -147,36 +73,16 @@
             </validation-provider>
 
             <!--Tag -->
-            <b-form-group
-              label="Tag"
-              label-for="tag"
-            >
-              <v-select
-                v-model="taskLocal.tags"
-                :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-                multiple
-                :close-on-select="false"
-                :options="tagOptions"
-                :reduce="option => option.value"
-                input-id="tags"
-              />
+            <b-form-group label="Tag" label-for="tag">
+              <v-select v-model="taskLocal.tags" :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'" multiple
+                :close-on-select="false" :options="tagOptions" :reduce="option => option.value" input-id="tags" />
             </b-form-group>
 
             <!-- Description -->
-            <b-form-group
-              label="Description"
-              label-for="task-description"
-            >
-              <quill-editor
-                id="quil-content"
-                v-model="taskLocal.description"
-                :options="editorOption"
-                class="border-bottom-0"
-              />
-              <div
-                id="quill-toolbar"
-                class="d-flex justify-content-end border-top-0"
-              >
+            <b-form-group label="Description" label-for="task-description">
+              <quill-editor id="quil-content" v-model="taskLocal.description" :options="editorOption"
+                class="border-bottom-0" />
+              <div id="quill-toolbar" class="d-flex justify-content-end border-top-0">
                 <!-- Add a bold button -->
                 <button class="ql-bold" />
                 <button class="ql-italic" />
@@ -188,19 +94,10 @@
 
             <!-- Form Actions -->
             <div class="d-flex mt-2">
-              <b-button
-                v-ripple.400="'rgba(255, 255, 255, 0.15)'"
-                variant="primary"
-                class="mr-2"
-                type="submit"
-              >
+              <b-button v-ripple.400="'rgba(255, 255, 255, 0.15)'" variant="primary" class="mr-2" type="submit">
                 {{ taskLocal.id ? 'Update' : 'Add ' }}
               </b-button>
-              <b-button
-                v-ripple.400="'rgba(186, 191, 199, 0.15)'"
-                type="reset"
-                variant="outline-secondary"
-              >
+              <b-button v-ripple.400="'rgba(186, 191, 199, 0.15)'" type="reset" variant="outline-secondary">
                 Reset
               </b-button>
             </div>
@@ -335,16 +232,16 @@ export default {
 
 .assignee-selector {
   ::v-deep .vs__dropdown-toggle {
-  padding-left: 0;
+    padding-left: 0;
   }
 }
 
 #quil-content ::v-deep {
-  > .ql-container {
+  >.ql-container {
     border-bottom: 0;
   }
 
-  + #quill-toolbar {
+  +#quill-toolbar {
     border-top-left-radius: 0;
     border-top-right-radius: 0;
     border-bottom-left-radius: $border-radius;

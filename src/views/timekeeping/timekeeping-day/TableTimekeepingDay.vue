@@ -1,6 +1,6 @@
 <template>
   <!-- Table Container Card -->
-  <b-card no-body>
+  <b-card style="padding: 0!important;">
     <div class="m-2">
       <div class="custom-search">
         <!-- advance search input -->
@@ -8,131 +8,63 @@
           <b-col md="3">
             <b-form-group>
               <label style="float: left">Ngày:</label>
-              <b-form-datepicker
-                id="example-datepicker"
-                v-model="param.day"
-                prop=""
-                class="mb-2"
-              ></b-form-datepicker>
+              <b-form-datepicker id="example-datepicker" v-model="param.day" prop="" class="mb-2"></b-form-datepicker>
             </b-form-group>
           </b-col>
           <b-col md="3">
             <b-form-group>
               <label style="float: left">Mã nhân viên:</label>
-              <b-form-input
-                v-model="param.employeeId"
-                placeholder="Mã nhân vien"
-                type="text"
-                class="d-inline-block"
-                @input="advanceSearch"
-              />
+              <b-form-input v-model="param.personNO" placeholder="Mã nhân vien" type="text" class="d-inline-block"
+                @input="advanceSearch" />
             </b-form-group>
           </b-col>
           <b-col md="3">
             <b-form-group>
               <label style="float: left">Họ tên:</label>
-              <b-form-input
-                v-model="param.fullName"
-                placeholder="Họ tên"
-                type="text"
-                class="d-inline-block"
-                @input="advanceSearch"
-              />
+              <b-form-input v-model="param.fullName" placeholder="Họ tên" type="text" class="d-inline-block"
+                @input="advanceSearch" />
             </b-form-group>
           </b-col>
           <b-col md="3">
             <b-form-group>
               <label style="float: left">Ca làm:</label>
-              <b-form-input
-                v-model="param.shift"
-                placeholder="Ca làm"
-                type="text"
-                class="d-inline-block"
-                @input="advanceSearch"
-              />
+              <b-form-input v-model="param.shift" placeholder="Ca làm" type="text" class="d-inline-block"
+                @input="advanceSearch" />
             </b-form-group>
           </b-col>
           <b-col md="3">
             <b-form-group>
               <label style="float: left">Phòng ban:</label>
-              <b-form-input
-                v-model="param.department"
-                placeholder="Phòng ban"
-                type="text"
-                class="d-inline-block"
-                @input="advanceSearch"
-              />
+              <b-form-input v-model="param.department" placeholder="Phòng ban" type="text" class="d-inline-block"
+                @input="advanceSearch" />
             </b-form-group>
           </b-col>
           <b-col md="3">
             <b-form-group>
               <label style="float: left">Ghi chú:</label>
-              <b-form-input
-                v-model="param.note"
-                placeholder="Ghi chú"
-                type="text"
-                class="d-inline-block"
-                @input="advanceSearch"
-              />
+              <b-form-input v-model="param.note" placeholder="Ghi chú" type="text" class="d-inline-block"
+                @input="advanceSearch" />
             </b-form-group>
           </b-col>
         </b-row>
+        <!-- <b-button variant="relief-info" class="mr-1" @click="fetchData">Tra Cứu</b-button> -->
       </div>
     </div>
-
-    <b-table
-      style="height: 450px"
-      table-style="width: max-content !important;"
-      :select-mode="selectMode"
-      selectable
-      responsive
-      table-class=" text-nowrap"
-      :fields="tableColumns"
-      primary-key="id"
-      :sort-by.sync="sortBy"
-      show-empty
-      empty-text="Không có dữ liệu"
-      :sort-desc.sync="isSortDirDesc"
-      class="d-block table-cus"
-      @row-selected="onRowSelected"
-      ref="refInvoiceListTable"
-    >
-      <!-- <template #table-colgroup="scope">
-        <col
-          v-for="field in scope.fields"
-          :key="field.key"
-          :style="{ width: '200px' }"
-        />
-      </template> -->
+    <b-table style="height: 450px" table-style="width: max-content !important;" :select-mode="selectMode" selectable
+      responsive table-class=" text-nowrap" :fields="tableColumns" primary-key="id" :sort-by.sync="sortBy" show-empty
+      empty-text="Không có dữ liệu" :sort-desc.sync="isSortDirDesc" class="d-block table-cus"
+      @row-selected="onRowSelected" ref="refInvoiceListTable">
     </b-table>
     <div class="mx-2 mb-2">
       <b-row>
-        <b-col
-          cols="12"
-          sm="6"
-          class="d-flex align-items-center justify-content-center justify-content-sm-start"
-        >
-          <span class="text-muted"
-            >Showing {{ dataMeta.from }} to {{ dataMeta.to }} of
-            {{ dataMeta.of }} entries</span
-          >
+        <b-col cols="12" sm="6" class="d-flex align-items-center justify-content-center justify-content-sm-start">
+          <span class="text-muted">Showing {{ dataMeta.from }} to {{ dataMeta.to }} of
+            {{ dataMeta.of }} entries</span>
         </b-col>
         <!-- Pagination -->
-        <b-col
-          cols="12"
-          sm="6"
-          class="d-flex align-items-center justify-content-center justify-content-sm-end"
-        >
-          <b-pagination
-            v-model="currentPage"
-            :total-rows="totalInvoices"
-            :per-page="perPage"
-            first-number
-            last-number
-            class="mb-0 mt-1 mt-sm-0"
-            prev-class="prev-item"
-            next-class="next-item"
-          >
+        <b-col cols="12" sm="6" class="d-flex align-items-center justify-content-center justify-content-sm-end">
+          <b-pagination v-model="currentPage" :total-rows="totalInvoices" :per-page="perPage" first-number last-number
+            class="mb-0 mt-1 mt-sm-0" prev-class="prev-item" next-class="next-item">
             <template #prev-text>
               <feather-icon icon="ChevronLeftIcon" size="18" />
             </template>
@@ -170,9 +102,8 @@ import vSelect from "vue-select";
 import { onUnmounted } from "@vue/composition-api";
 import store from "@/store";
 import timekeepingDayList from "./TimekeepingDayList";
-// axios
+import timekeepingStoreModule from "../timekeepingStoreModule";
 import axios from "axios";
-import invoiceStoreModule from "../invoiceStoreModule";
 
 export default {
   data() {
@@ -181,13 +112,26 @@ export default {
       param: {},
       noCollapse: false,
       modes: ["multi", "single", "range"],
-      fields: ["selected", "isActive", "age", "first_name", "last_name"],
       selectMode: "single",
       selected: [],
       data: [],
+
     };
   },
+  mounted() {
+
+  },
+  created: function () {
+  },
   methods: {
+
+    async fetchData() {
+      await axios.get('http://192.168.5.42:99/api/hrBoxDoorRecord', { params: this.param }).then(res => {
+        console.log(res);
+        this.data = res;
+      })
+    },
+
     advanceSearch(val) {
       this.searchTerm = val;
     },
@@ -195,19 +139,6 @@ export default {
     onRowSelected(items) {
       this.selected = items;
     },
-
-    // fetchTimekeepings() {
-    //   try {
-    //     getHrBoxDoorRecord(this.param)
-    //       .then((res) => {
-    //         console.log(res);
-    //         this.refresh = true;
-    //       })
-    //       .catch((err) => {
-    //         this.$tip.error(this.$t("public.bccg") + err);
-    //       });
-    //   } catch (error) {}
-    // },
   },
   components: {
     BCard,
@@ -229,28 +160,20 @@ export default {
     vSelect,
   },
   setup() {
-    const INVOICE_APP_STORE_MODULE_NAME = "TimeKeeping";
+    const INVOICE_APP_STORE_MODULE_NAME = "timeKeeping";
 
     // Register module
     if (!store.hasModule(INVOICE_APP_STORE_MODULE_NAME))
-      store.registerModule(INVOICE_APP_STORE_MODULE_NAME, invoiceStoreModule);
+      store.registerModule(INVOICE_APP_STORE_MODULE_NAME, timekeepingStoreModule);
 
     // UnRegister on leave
     onUnmounted(() => {
       if (store.hasModule(INVOICE_APP_STORE_MODULE_NAME))
         store.unregisterModule(INVOICE_APP_STORE_MODULE_NAME);
-    });
-
-    const statusOptions = [
-      "Downloaded",
-      "Draft",
-      "Paid",
-      "Partial Payment",
-      "Past Due",
-    ];
+    })
 
     const {
-      // fetchTimekeepings,
+      fetchTimekeepings,
       tableColumns,
       perPage,
       currentPage,
@@ -264,8 +187,9 @@ export default {
       statusFilter,
       refetchData,
     } = timekeepingDayList();
+
     return {
-      // fetchTimekeepings,
+      fetchTimekeepings,
       tableColumns,
       perPage,
       currentPage,
@@ -278,7 +202,6 @@ export default {
       refInvoiceListTable,
       statusFilter,
       refetchData,
-      statusOptions,
       avatarText,
     };
   },
@@ -290,22 +213,25 @@ export default {
 table.b-table[aria-busy="false"] {
   width: max-content !important;
 }
-.table.b-table > tbody > .table-active,
-.table.b-table > tbody > .table-active > th,
-.table.b-table > tbody > .table-active > td {
+
+.table.b-table>tbody>.table-active,
+.table.b-table>tbody>.table-active>th,
+.table.b-table>tbody>.table-active>td {
   background-color: #bdf !important;
 }
+
 table#table-transition-example .flip-list-move {
   transition: transform 1s;
 }
+
 .form-group {
   margin-bottom: 0;
 }
+
 .card-body {
   padding: 0 !important;
 }
 </style>
-
 <style lang="scss">
 @import "@core/scss/vue/libs/vue-select.scss";
 </style>

@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="customizer d-none d-md-block"
-    :class="{'open': isCustomizerOpen}"
-  >
+  <div class="customizer d-none d-md-block" :class="{ 'open': isCustomizerOpen }">
     <!-- Toggler -->
     <!-- <b-link
       class="customizer-toggle d-flex align-items-center justify-content-center"
@@ -24,12 +21,7 @@
         </h4>
         <small>Customize &amp; Preview in Real Time</small>
       </div>
-      <feather-icon
-        icon="XIcon"
-        size="18"
-        class="cursor-pointer"
-        @click="isCustomizerOpen = !isCustomizerOpen"
-      />
+      <feather-icon icon="XIcon" size="18" class="cursor-pointer" @click="isCustomizerOpen = !isCustomizerOpen" />
     </div>
     <!-- Header -->
 
@@ -163,7 +155,7 @@ export default {
 
 .customizer-section {
   padding: 1.5rem;
-    border-bottom: 1px solid #ebe9f1;
+  border-bottom: 1px solid #ebe9f1;
 
   .dark-layout & {
     border-color: $theme-dark-border-color;
@@ -176,10 +168,13 @@ export default {
   }
 
   .form-group {
-    margin-bottom: 1.5rem;;
+    margin-bottom: 1.5rem;
+    ;
+
     &:last-of-type {
-    margin-bottom: 0;
+      margin-bottom: 0;
     }
+
     ::v-deep legend {
       font-weight: 500;
     }
@@ -187,7 +182,7 @@ export default {
 }
 
 .mark-active {
-  box-shadow: 0 0 0 0.2rem rgba(38,143,255,.5);
+  box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, .5);
 }
 
 .ps-customizer-area {

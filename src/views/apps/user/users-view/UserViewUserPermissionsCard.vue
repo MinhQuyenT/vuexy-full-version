@@ -1,26 +1,16 @@
 <template>
-  <b-card
-    no-body
-  >
+  <b-card no-body>
     <b-card-body>
       <b-card-title>Permissions</b-card-title>
       <b-card-sub-title>Permission according to roles</b-card-sub-title>
     </b-card-body>
-    <b-table
-      striped
-      responsive
-      :items="permissionsData"
-      class="mb-0"
-    >
+    <b-table striped responsive :items="permissionsData" class="mb-0">
 
       <template #cell(module)="data">
         {{ data.value }}
       </template>
       <template #cell()="data">
-        <b-form-checkbox
-          disabled
-          :checked="data.value"
-        />
+        <b-form-checkbox disabled :checked="data.value" />
       </template>
 
     </b-table>
@@ -82,6 +72,4 @@ export default {
 }
 </script>
 
-<style>
-
-</style>
+<style></style>

@@ -4,7 +4,7 @@
 
       <!-- Brand logo-->
       <b-link class="brand-logo">
-        <vuexy-logo />
+        <b-avatar src="../../../assets/images/logo/avatar.png" size="6rem"></b-avatar>
         <h2 class="brand-text text-primary ml-1">
           Vuexy
         </h2>

@@ -1,25 +1,14 @@
 <template>
-  <div
-    class="horizontal-layout"
-    :class="[layoutClasses]"
-    :data-col="isNavMenuHidden ? '1-column' : null"
-    style="height:inherit"
-  >
+  <div class="horizontal-layout" :class="[layoutClasses]" :data-col="isNavMenuHidden ? '1-column' : null"
+    style="height:inherit">
 
     <!-- NAVBAR -->
-    <b-navbar
-      :style="{
-        backgroundColor: navbarType === 'static' && scrolledTo && skin === 'light' ? 'white' : null,
-        boxShadow: navbarType === 'static' && scrolledTo ? 'rgba(0, 0, 0, 0.05) 0px 4px 20px 0px' : null,
-      }"
-      :toggleable="false"
-      class="header-navbar navbar-shadow align-items-center navbar-brand-center navbar-fixed"
-      :class="{'fixed-top': $store.getters['app/currentBreakPoint'] !== 'xl'}"
-    >
-      <slot
-        name="navbar"
-        :toggleVerticalMenuActive="toggleVerticalMenuActive"
-      >
+    <b-navbar :style="{
+      backgroundColor: navbarType === 'static' && scrolledTo && skin === 'light' ? 'white' : null,
+      boxShadow: navbarType === 'static' && scrolledTo ? 'rgba(0, 0, 0, 0.05) 0px 4px 20px 0px' : null,
+    }" :toggleable="false" class="header-navbar navbar-shadow align-items-center navbar-brand-center navbar-fixed"
+      :class="{ 'fixed-top': $store.getters['app/currentBreakPoint'] !== 'xl' }">
+      <slot name="navbar" :toggleVerticalMenuActive="toggleVerticalMenuActive">
         <app-navbar-horizontal-layout-brand />
         <app-navbar-horizontal-layout :toggle-vertical-menu-active="toggleVerticalMenuActive" />
       </slot>
@@ -27,56 +16,33 @@
     <!--/ NAVBAR -->
 
     <div class="horizontal-menu-wrapper">
-      <div
-        v-if="!isNavMenuHidden"
+      <div v-if="!isNavMenuHidden"
         class="header-navbar navbar-expand-sm navbar navbar-horizontal navbar-light navbar-shadow menu-border d-none d-xl-block"
-        :class="[navbarMenuTypeClass]"
-      >
+        :class="[navbarMenuTypeClass]">
         <horizontal-nav-menu />
       </div>
 
       <!-- Vertical Nav Menu -->
-      <vertical-nav-menu
-        :is-vertical-menu-active="isVerticalMenuActive"
-        :toggle-vertical-menu-active="toggleVerticalMenuActive"
-        class="d-block d-xl-none"
-      >
+      <vertical-nav-menu :is-vertical-menu-active="isVerticalMenuActive"
+        :toggle-vertical-menu-active="toggleVerticalMenuActive" class="d-block d-xl-none">
         <template #header="slotProps">
-          <slot
-            name="vertical-menu-header"
-            v-bind="slotProps"
-          />
+          <slot name="vertical-menu-header" v-bind="slotProps" />
         </template>
       </vertical-nav-menu>
-    <!-- /Vertical Nav Menu -->
+      <!-- /Vertical Nav Menu -->
     </div>
 
     <!-- Vertical Nav Menu Overlay -->
-    <div
-      class="sidenav-overlay"
-      :class="overlayClasses"
-      @click="isVerticalMenuActive = false"
-    />
+    <div class="sidenav-overlay" :class="overlayClasses" @click="isVerticalMenuActive = false" />
     <!-- /Vertical Nav Menu Overlay -->
 
     <!-- CONTENT -->
     <!-- CONTENT TYPE: Left -->
-    <transition
-      :name="routerTransition"
-      mode="out-in"
-    >
-      <component
-        :is="layoutContentRenderer"
-        :key="layoutContentRenderer === 'layout-content-renderer-left' ? $route.meta.navActiveLink || $route.name : null"
-      >
-        <template
-          v-for="(index, name) in $scopedSlots"
-          v-slot:[name]="data"
-        >
-          <slot
-            :name="name"
-            v-bind="data"
-          />
+    <transition :name="routerTransition" mode="out-in">
+      <component :is="layoutContentRenderer"
+        :key="layoutContentRenderer === 'layout-content-renderer-left' ? $route.meta.navActiveLink || $route.name : null">
+        <template v-for="(index, name) in $scopedSlots" v-slot:[name]="data">
+          <slot :name="name" v-bind="data" />
         </template>
       </component>
     </transition>
@@ -84,14 +50,14 @@
     <!--/ CONTENT -->
 
     <!-- Footer -->
-    <footer
+    <!-- <footer
       class="footer footer-light"
       :class="[footerTypeClass]"
     >
       <slot name="footer">
         <app-footer />
       </slot>
-    </footer>
+    </footer> -->
 
     <slot name="customizer" />
   </div>

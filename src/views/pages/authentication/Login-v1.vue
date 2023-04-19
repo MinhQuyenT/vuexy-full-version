@@ -4,9 +4,9 @@
       <!-- Login v1 -->
       <b-card class="mb-0">
         <b-link class="brand-logo">
-          <vuexy-logo />
+          <b-avatar src="../../../assets/images/logo/avatar.png" size="6rem"></b-avatar>
 
-          <h2 class="brand-text text-primary ml-1">Vuexy</h2>
+          <h2 class="brand-text text-primary ml-1">S.Power</h2>
         </b-link>
 
         <b-card-title class="mb-1"> Welcome to Vuexy! 👋 </b-card-title>
@@ -19,19 +19,9 @@
           <b-form class="auth-login-form mt-2" @submit.prevent>
             <!-- email -->
             <b-form-group label-for="email" label="Email">
-              <validation-provider
-                #default="{ errors }"
-                name="Email"
-                rules="required|email"
-              >
-                <b-form-input
-                  id="email"
-                  v-model="userEmail"
-                  name="login-email"
-                  :state="errors.length > 0 ? false : null"
-                  placeholder="john@example.com"
-                  autofocus
-                />
+              <validation-provider #default="{ errors }" name="Email" rules="required|email">
+                <b-form-input id="email" v-model="userEmail" name="login-email" :state="errors.length > 0 ? false : null"
+                  placeholder="john@example.com" autofocus />
                 <small class="text-danger">{{ errors[0] }}</small>
               </validation-provider>
             </b-form-group>
@@ -44,31 +34,13 @@
                   <small>Forgot Password?</small>
                 </b-link>
               </div>
-              <validation-provider
-                #default="{ errors }"
-                name="Password"
-                rules="required"
-              >
-                <b-input-group
-                  class="input-group-merge"
-                  :class="errors.length > 0 ? 'is-invalid' : null"
-                >
-                  <b-form-input
-                    id="password"
-                    v-model="password"
-                    :type="passwordFieldType"
-                    class="form-control-merge"
-                    :state="errors.length > 0 ? false : null"
-                    name="login-password"
-                    placeholder="Password"
-                  />
+              <validation-provider #default="{ errors }" name="Password" rules="required">
+                <b-input-group class="input-group-merge" :class="errors.length > 0 ? 'is-invalid' : null">
+                  <b-form-input id="password" v-model="password" :type="passwordFieldType" class="form-control-merge"
+                    :state="errors.length > 0 ? false : null" name="login-password" placeholder="Password" />
 
                   <b-input-group-append is-text>
-                    <feather-icon
-                      class="cursor-pointer"
-                      :icon="passwordToggleIcon"
-                      @click="togglePasswordVisibility"
-                    />
+                    <feather-icon class="cursor-pointer" :icon="passwordToggleIcon" @click="togglePasswordVisibility" />
                   </b-input-group-append>
                 </b-input-group>
                 <small class="text-danger">{{ errors[0] }}</small>
@@ -77,11 +49,7 @@
 
             <!-- checkbox -->
             <b-form-group>
-              <b-form-checkbox
-                id="remember-me"
-                v-model="status"
-                name="checkbox-1"
-              >
+              <b-form-checkbox id="remember-me" v-model="status" name="checkbox-1">
                 Remember Me
               </b-form-checkbox>
             </b-form-group>
