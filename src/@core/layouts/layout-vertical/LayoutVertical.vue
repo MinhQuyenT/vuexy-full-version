@@ -100,7 +100,6 @@ export default {
       navbarTypeClass,
       footerTypeClass,
     } = useVerticalLayout(navbarType, footerType)
-
     // Resize handler
     resizeHandler()
     window.addEventListener('resize', resizeHandler)

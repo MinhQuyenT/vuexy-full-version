@@ -9,7 +9,7 @@ export default [
   },
   {
     title: 'Chấm công tháng',
-    route: 'apps-chat',
+    route: 'timekeeping-month',
     icon: 'EditIcon',
   },
   {
@@ -19,7 +19,7 @@ export default [
   },
   {
     title: 'Đồng bộ dữ liệu',
-    route: 'apps-calendar',
+    route: 'data-synchronization',
     icon: 'DatabaseIcon',
   },
   {

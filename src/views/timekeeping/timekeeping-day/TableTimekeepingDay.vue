@@ -27,16 +27,20 @@
           </b-col>
           <b-col md="3">
             <b-form-group>
-              <label style="float: left">Ca làm:</label>
-              <b-form-input v-model="param.shift" placeholder="Ca làm" type="text" class="d-inline-block"
-                @input="advanceSearch" />
-            </b-form-group>
+                <label style="float: left">Ca làm:</label>
+                <b-form-select v-model="param.month" :options="optionsShift" @input="advanceSearch"></b-form-select>
+              </b-form-group>
           </b-col>
           <b-col md="3">
             <b-form-group>
               <label style="float: left">Phòng ban:</label>
-              <b-form-input v-model="param.department" placeholder="Phòng ban" type="text" class="d-inline-block"
-                @input="advanceSearch" />
+              <b-form-select v-model="param.month" :options="optionsDepartment" @input="advanceSearch"></b-form-select>
+            </b-form-group>
+          </b-col>
+          <b-col md="3">
+            <b-form-group>
+              <label style="float: left">Quốc tịch:</label>
+              <b-form-select v-model="param.month" :options="optionsDepartment" @input="advanceSearch"></b-form-select>
             </b-form-group>
           </b-col>
           <b-col md="3">
@@ -80,6 +84,7 @@
 
 <script>
 import {
+  BFormSelect,
   BCard,
   BRow,
   BCol,
@@ -97,7 +102,6 @@ import {
   BTooltip,
   BFormDatepicker,
 } from "bootstrap-vue";
-import { avatarText } from "@core/utils/filter";
 import vSelect from "vue-select";
 import { onUnmounted } from "@vue/composition-api";
 import store from "@/store";
@@ -141,6 +145,7 @@ export default {
     },
   },
   components: {
+    BFormSelect,
     BCard,
     BRow,
     BCol,
@@ -186,6 +191,8 @@ export default {
       refInvoiceListTable,
       statusFilter,
       refetchData,
+      optionsShift,
+      optionsDepartment
     } = timekeepingDayList();
 
     return {
@@ -201,8 +208,9 @@ export default {
       isSortDirDesc,
       refInvoiceListTable,
       statusFilter,
+      optionsShift,
+      optionsDepartment,
       refetchData,
-      avatarText,
     };
   },
 };

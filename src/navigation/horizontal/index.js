@@ -23,6 +23,7 @@ title
 route: [route_obj/route_name] (I have to resolve name somehow from the route obj)
 
 */
+import manager from './manager'
 import dashboard from './dashboard'
 import timekeeping from './timekeeping'
 // import apps from './apps'
@@ -33,4 +34,4 @@ import timekeeping from './timekeeping'
 // import others from './others'
 
 // Array of sections
-export default [...dashboard, ...timekeeping]
+export default [...dashboard, ...timekeeping, ...manager]

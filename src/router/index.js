@@ -12,6 +12,7 @@ import chartsMaps from './routes/charts-maps'
 import formsTable from './routes/forms-tables'
 import others from './routes/others'
 import timekeeping from './routes/timekeeping'
+import manager from './routes/manager'
 
 Vue.use(VueRouter)
 
@@ -24,6 +25,7 @@ const router = new VueRouter({
   routes: [
     { path: '/', redirect: { name: 'dashboard-ecommerce' } },
     ...timekeeping,
+    ...manager,
     ...apps,
     ...dashboard,
     ...pages,

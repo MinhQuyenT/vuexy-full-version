@@ -2,6 +2,7 @@ import { extend, localize } from 'vee-validate'
 import {
   required as rule_required,
   email as rule_email,
+  username as rule_username,
   min as rule_min,
   confirmed as rule_confirmed,
   regex as rule_regex,
@@ -26,6 +27,8 @@ import { validatorPositive, validatorUrlValidator, validatorPassword, validatorC
 export const required = extend('required', rule_required)
 
 export const email = extend('email', rule_email)
+
+export const username = extend('username', rule_username)
 
 export const min = extend('min', rule_min)
 
@@ -72,7 +75,7 @@ localize({
   en: {
     messages: en.messages,
     names: {
-      email: 'Email',
+      username: 'Username',
       password: 'Password',
     },
     fields: {

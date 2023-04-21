@@ -2,12 +2,12 @@
     <b-sidebar id="sidebar-backdrop" title="Sidebar with backdrop" sidebar-class="sidebar-lg" bg-variant="white" shadow
         backdrop right no-header>
         <div class="">
-            <template >
+            <template>
                 <!-- Header -->
                 <div class="d-flex justify-content-between align-items-center content-sidebar-header px-2 py-1">
                     <h5 class="mb-0">THÔNG TIN CHI TIẾT</h5>
                     <div>
-                        <feather-icon class="ml-1 cursor-pointer" icon="XIcon" size="16"  />
+                        <feather-icon class="ml-1 cursor-pointer" icon="XIcon" size="16" />
                     </div>
                 </div>
                 <!-- Body -->
@@ -21,7 +21,7 @@
                                 <div class="d-flex flex-column ml-1">
                                     <div class="mb-1">
                                         <h4 class="mb-1">
-                                           <strong>Họ tên: </strong>  Nguyễn Văn A
+                                            <strong>Họ tên: </strong> Nguyễn Văn A
                                         </h4>
                                         <span class="card-text mb-1">
                                             <strong>Ngày sinh: </strong> 01/01/2023
@@ -72,31 +72,20 @@
                 <b-row>
                     <b-col cols="12" lg="8">
                         <b-card title="CHI TIẾT QUẸT GƯƠNG MẶT">
-                            <b-table show-empty empty-text="Không có dữ liệu" table-style="width: max-content !important; " style="min-height: 610px!important;"
-                                striped responsive :fields="faceInfoField" class="mb-0">
+                            <b-table show-empty empty-text="Không có dữ liệu" table-style="width: max-content !important; "
+                                style="min-height: 610px!important;" striped responsive :fields="faceInfoField"
+                                class="mb-0">
 
                             </b-table>
                         </b-card>
                     </b-col>
                     <b-col cols="12" lg="4">
                         <b-card title="DỮ LIỆU BÙ THẺ">
-                            <b-table striped responsive :items="permissionsData" class="mb-0">
-                                <template #cell(module)="data">
-                                    {{ data.value }}
-                                </template>
-                                <!-- <template #cell()="data">
-                                    <b-form-checkbox disabled :checked="data.value" />
-                                </template> -->
+                            <b-table striped responsive :fields="optiontb2" class="mb-0">
                             </b-table>
                         </b-card>
                         <b-card title="ĐĂNG KÝ NGHỈ PHÉP" style="padding-top: 0;">
-                            <b-table striped responsive :items="permissionsData" class="mb-0" >
-                                <template #cell(module)="data">
-                                    {{ data.value }}
-                                </template>
-                                <!-- <template #cell()="data">
-                                    <b-form-checkbox disabled :checked="data.value" />
-                                </template> -->
+                            <b-table striped responsive :items="data" :fields="option" class="mb-0">
                             </b-table>
                         </b-card>
                     </b-col>
@@ -110,7 +99,68 @@ import { BSidebar, BCard, BRow, BCol, BTable, BAvatar } from "bootstrap-vue";
 import { ValidationObserver } from "vee-validate";
 export default {
     data() {
-        return {};
+        return {
+            option: [
+                {
+                    label: 'Ngày',
+                    key: 'date',
+                    sortable: true
+                },
+                {
+                    label: 'Họ Tên',
+                    key: 'fullName',
+                    sortable: true
+                },
+                {
+                    label: 'Bù Phép',
+                    key: 'leave',
+                    sortable: true
+                },
+                {
+                    label: 'Loại Phép',
+                    key: 'leaveType',
+                    sortable: true
+                },
+                {
+                    label: 'Số Tiếng nghỉ',
+                    key: 'sumH',
+                    sortable: true
+                }
+            ],
+
+             optiontb2:  [
+                {
+                    label: 'Ngày',
+                    key: 'date',
+                    sortable: true
+                },
+                {
+                    label: 'Bù Phép',
+                    key: 'leave',
+                    sortable: true
+                },
+                {
+                    label: 'Loại Phép',
+                    key: 'leaveType',
+                    sortable: true
+                },
+                {
+                    label: 'Số Tiếng',
+                    key: 'sumH',
+                    sortable: true
+                }
+            ],
+            data: [
+                {
+                    date: "20/04/2023",
+                    fullName: 'Tran Minh Quyen',
+                    leave: 'Bênh',
+                    leaveType: 'Ngày',
+                    sumH: '7',
+                },
+
+            ],
+        };
     },
     components: {
         BSidebar, ValidationObserver, BCard, BRow, BCol, BTable, BAvatar
@@ -125,48 +175,10 @@ export default {
             { label: 'Thời gian Upload dữ liệu', key: "tg1", sortable: true },
             { label: 'Hình ảnh', key: "img", sortable: true },
 
-        ]
-        const permissionsData = [
-            {
-                module: 'Admin',
-                read: true,
-                write: false,
-                create: false,
-                delete: false,
-            },
-            {
-                module: 'Staff',
-                read: false,
-                write: true,
-                create: false,
-                delete: false,
-            },
-            {
-                module: 'Author',
-                read: true,
-                write: false,
-                create: true,
-                delete: false,
-            },
-            {
-                module: 'Contributor',
-                read: false,
-                write: false,
-                create: false,
-                delete: false,
-            },
-            {
-                module: 'User',
-                read: false,
-                write: false,
-                create: false,
-                delete: true,
-            },
-        ]
+        ];
 
         return {
-            permissionsData,
-            faceInfoField
+            faceInfoField,
         }
     },
 };

@@ -25,23 +25,6 @@
           <b-card-title class="mb-1 font-weight-bold text-center" title-tag="h2">
             Đăng Nhập Hệ Thống
           </b-card-title>
-          <!-- <b-card-text class="mb-2">
-            Please sign-in to your account and start the adventure
-          </b-card-text> -->
-
-          <!-- <b-alert variant="primary" show>
-            <div class="alert-body font-small-2">
-              <p>
-                <small class="mr-50"><span class="font-weight-bold">Admin:</span> admin@demo.com | admin</small>
-              </p>
-              <p>
-                <small class="mr-50"><span class="font-weight-bold">Client:</span> client@demo.com | client</small>
-              </p>
-            </div>
-            <feather-icon v-b-tooltip.hover.left="'This is just for ACL demo purpose'" icon="HelpCircleIcon" size="18"
-              class="position-absolute" style="top: 10; right: 10;" />
-          </b-alert> -->
-
           <!-- form -->
           <validation-observer ref="loginForm" #default="{ invalid }">
             <b-form class="auth-login-form mt-2" @submit.prevent="login">
@@ -49,7 +32,7 @@
               <b-form-group label="Username" label-for="login-username">
                 <validation-provider #default="{ errors }" name="username" vid="username" rules="required|username">
                   <b-form-input id="login-username" v-model="username" :state="errors.length > 0 ? false : null"
-                    name="login-username" placeholder="S.Power" />
+                    name="login-username" placeholder="s.power" />
                   <small class="text-danger">{{ errors[0] }}</small>
                 </validation-provider>
               </b-form-group>
@@ -132,7 +115,7 @@ import {
   BRow, BCol, BLink, BFormGroup, BAvatar, BFormInput, BInputGroupAppend, BInputGroup, BFormCheckbox, BCardText, BCardTitle, BImg, BForm, BButton, BAlert, VBTooltip,
 } from 'bootstrap-vue'
 import useJwt from '@/auth/jwt/useJwt'
-import { required, email } from '@validations'
+import { required, email, username } from '@validations'
 import { togglePasswordVisibility } from '@core/mixins/ui/forms'
 import store from '@/store/index'
 import { getHomeRouteForLoggedInUser } from '@/auth/utils'
@@ -167,13 +150,13 @@ export default {
   data() {
     return {
       status: '',
-      password: '',
-      username: '',
+      password: "",
+      username: "",
       sideImg: require('@/assets/images/pages/login-v2.svg'),
 
       // validation rules
       required,
-      email,
+      username
     }
   },
   computed: {
@@ -192,57 +175,55 @@ export default {
   methods: {
     login() {
       this.$refs.loginForm.validate().then(success => {
-        debugger
         if (success) {
-          useJwt.login({
-            password: this.password, username: this.userEmail, 
-          })
-            .then(response => {
+          const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password })
+          };
 
-              const obj = {
-                id: 1,
-                fullName: response.data.userInfo,
-                username: this.user,
-                avatar: "/img/13-small.d796bffd.png",
-                email: "Test@123.com",
-                role: "admin",
-                ability: [
-                  {
-                    action: "manage",
-                    subject: "all"
-                  }
-                ],
-                extras: {
-                  "eCommerceCartItemsCount": 5
-                }
+          fetch(`${config.apiUrl}/users/authenticate`, requestOptions)
+            .then(handleResponse)
+            .then(user => {
+              // login thành công nếu có một token jwt trong response
+              if (user.token) {
+                // lưu dữ liệu user và token jwt vào local storage để giữ user được log in trong page
+                localStorage.setItem('user', JSON.stringify(user));
               }
 
-              const { userData } = response.data
-              useJwt.setToken(response.data.accessToken)
-              useJwt.setRefreshToken(response.data.accessToken)
-              localStorage.setItem('userData', JSON.stringify(obj))
-              this.$ability.update(obj.ability)
+              return user;
+            });
+
+
+          useJwt.login({ username: this.username, password: this.password, })
+            .then(response => {
+              const { data } = response.data
+              useJwt.setToken(response.data.token)
+              // useJwt.setRefreshToken(response.data.refreshToken)
+              localStorage.setItem('userData', JSON.stringify(data))
 
               // ? This is just for demo purpose as well.
               // ? Because we are showing eCommerce app's cart items count in navbar
-              this.$store.commit('app-ecommerce/UPDATE_CART_ITEMS_COUNT', userData.extras.eCommerceCartItemsCount)
+              // this.$store.commit('app-ecommerce/UPDATE_CART_ITEMS_COUNT', userData.extras.eCommerceCartItemsCount)
 
               // ? This is just for demo purpose. Don't think CASL is role based in this case, we used role in if condition just for ease
-              this.$router.replace(getHomeRouteForLoggedInUser(userData.role))
+              console.log(data, data.perm[0]);
+              this.$router.replace(getHomeRouteForLoggedInUser(data.perm[0]))
                 .then(() => {
                   this.$toast({
                     component: ToastificationContent,
                     position: 'top-right',
                     props: {
-                      title: `Xin chào ${userData.fullName || userData.username}`,
+                      title: `Xin chào ${userData.userInfo || userData.username}`,
                       icon: 'CoffeeIcon',
                       variant: 'success',
-                      text: `Bạn đã đăng nhập thành công với tài khoản ${userData.role}. Bây giờ bạn có thể sử dụng!`,
+                      text: `You have successfully logged in as ${userData.role}. Now you can start to explore!`,
                     },
                   })
                 })
-            }).catch(error => {
-              this.$refs.loginForm.setErrors(error.response.data?.error)
+            })
+            .catch(error => {
+              this.$refs.loginForm.setErrors(error.response.data.error)
             })
         }
       })

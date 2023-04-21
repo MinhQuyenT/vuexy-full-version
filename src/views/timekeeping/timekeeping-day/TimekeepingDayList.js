@@ -88,6 +88,21 @@ export default function timekeepingDayList() {
       });
   };
 
+  const optionsShift = [
+    { value: '0', text: 'Vui lòng chọn' },
+    { value: '1', text: 'Ca 1' },
+    { value: '2', text: 'Ca 2' },
+    { value: '3', text: 'Ca 3' },
+    { value: '4', text: 'Ca 4' },
+  ]
+  const optionsDepartment = [
+    { value: '0', text: 'Vui lòng chọn' },
+    { value: '1', text: 'Phòng 1' },
+    { value: '2', text: 'Phòng 2' },
+    { value: '3', text: 'Phòng 3' },
+    { value: '4', text: 'Phòng 4' },
+  ]
+
   return {
     fetchTimekeepings,
     tableColumns,
@@ -101,6 +116,8 @@ export default function timekeepingDayList() {
     isSortDirDesc,
     refInvoiceListTable,
     statusFilter,
+    optionsShift,
+    optionsDepartment,
     refetchData,
   };
 }
