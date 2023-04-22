@@ -195,7 +195,7 @@ export default {
         debugger
         if (success) {
           useJwt.login({
-            password: this.password, username: this.userEmail, 
+            password: this.password, username: this.userEmail,
           })
             .then(response => {
 
@@ -225,10 +225,10 @@ export default {
 
               // ? This is just for demo purpose as well.
               // ? Because we are showing eCommerce app's cart items count in navbar
-              this.$store.commit('app-ecommerce/UPDATE_CART_ITEMS_COUNT', userData.extras.eCommerceCartItemsCount)
+              this.$store.commit('app-ecommerce/UPDATE_CART_ITEMS_COUNT', obj.extras.eCommerceCartItemsCount)
 
               // ? This is just for demo purpose. Don't think CASL is role based in this case, we used role in if condition just for ease
-              this.$router.replace(getHomeRouteForLoggedInUser(userData.role))
+              this.$router.replace(getHomeRouteForLoggedInUser(obj.role))
                 .then(() => {
                   this.$toast({
                     component: ToastificationContent,
@@ -242,7 +242,8 @@ export default {
                   })
                 })
             }).catch(error => {
-              this.$refs.loginForm.setErrors(error.response.data?.error)
+              debugger;
+              this.$refs.loginForm.setErrors(error.response?.data?.error)
             })
         }
       })

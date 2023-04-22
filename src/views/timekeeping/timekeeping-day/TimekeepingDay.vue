@@ -9,7 +9,7 @@
       <table-timekeeping-day></table-timekeeping-day>
     </b-card>
     <!-- Sidebar -->
-    <sibar-detail></sibar-detail>
+    
   </div>
 </template>
 

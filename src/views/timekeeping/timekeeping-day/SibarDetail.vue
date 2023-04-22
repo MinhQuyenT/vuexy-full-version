@@ -73,10 +73,33 @@
                     <b-col cols="12" lg="8">
                         <b-card title="CHI TIẾT QUẸT GƯƠNG MẶT">
                             <b-table show-empty empty-text="Không có dữ liệu" table-style="width: max-content !important; "
-                                style="min-height: 610px!important;" striped responsive :fields="faceInfoField"
-                                class="mb-0">
-
+                                style="min-height: 610px!important;" striped responsive :fields="faceInfoField" class="mb-0"
+                                :items="fetchHrBoxDoorRecords">
                             </b-table>
+                            <div class="mx-2 mb-2">
+                                <b-row>
+                                    <b-col cols="12" sm="6"
+                                        class="d-flex align-items-center justify-content-center justify-content-sm-start">
+                                        <span class="text-muted">Showing {{ dataHrBoxRecordMeta.from }} to {{
+                                            dataHrBoxRecordMeta.to }} of
+                                            {{ dataHrBoxRecordMeta.of }} entries</span>
+                                    </b-col>
+                                    <!-- Pagination -->
+                                    <b-col cols="12" sm="6"
+                                        class="d-flex align-items-center justify-content-center justify-content-sm-end">
+                                        <b-pagination v-model="currentPage" :total-rows="totalInvoices" :per-page="perPage"
+                                            first-number last-number class="mb-0 mt-1 mt-sm-0" prev-class="prev-item"
+                                            next-class="next-item">
+                                            <template #prev-text>
+                                                <feather-icon icon="ChevronLeftIcon" size="18" />
+                                            </template>
+                                            <template #next-text>
+                                                <feather-icon icon="ChevronRightIcon" size="18" />
+                                            </template>
+                                        </b-pagination>
+                                    </b-col>
+                                </b-row>
+                            </div>
                         </b-card>
                     </b-col>
                     <b-col cols="12" lg="4">
@@ -95,11 +118,17 @@
     </b-sidebar>
 </template>
 <script>
-import { BSidebar, BCard, BRow, BCol, BTable, BAvatar } from "bootstrap-vue";
+import { BSidebar, BCard, BRow, BCol, BTable, BAvatar, BPagination } from "bootstrap-vue";
+import store from "@/store";
 import { ValidationObserver } from "vee-validate";
+import timekeepingDayList from "./TimekeepingDayList";
+import { onUnmounted } from "@vue/composition-api";
+import timekeepingStoreModule from "../timekeepingStoreModule";
 export default {
     data() {
         return {
+            hrBoxDoorRecord: {},
+            backdrop: false,
             option: [
                 {
                     label: 'Ngày',
@@ -128,7 +157,7 @@ export default {
                 }
             ],
 
-             optiontb2:  [
+            optiontb2: [
                 {
                     label: 'Ngày',
                     key: 'date',
@@ -162,22 +191,72 @@ export default {
             ],
         };
     },
+    created() {
+        this.getHrBoxDoorRecord();
+        console.log(this.fetchHrBoxDoorRecords());
+    },
+    methods: {
+        getHrBoxDoorRecord() {
+            this.$store.dispatch('timekeeping/fetchHrBoxDoorRecord').then((response) => {
+                this.hrBoxDoorRecord = response.data;
+            })
+        }
+    },
+
     components: {
-        BSidebar, ValidationObserver, BCard, BRow, BCol, BTable, BAvatar
+        BSidebar, ValidationObserver, BCard, BRow, BCol, BTable, BAvatar, BPagination
     },
     setup() {
-        const faceInfoField = [
-            { label: 'Thời Gian', key: "date", sortable: true, withDefaults: 200, },
-            { label: 'Mã Nhân Viên', key: "empNo", sortable: true, formatter: (val) => `$${val}`, with: 200 },
-            { label: 'Họ Tên', key: "fullName", sortable: false, with: 200 },
-            { label: 'Tên thiết bị', key: "department", sortable: true },
-            { label: 'Tên vị trí', key: "locationName", sortable: true },
-            { label: 'Thời gian Upload dữ liệu', key: "tg1", sortable: true },
-            { label: 'Hình ảnh', key: "img", sortable: true },
 
+        const TIMEKEEPING_APP_STORE_MODULE_NAME = "timeKeeping";
+
+        // const INVOICE_APP_STORE_MODULE_NAME = 'app-invoice'
+
+        // Register module
+        if (!store.hasModule(TIMEKEEPING_APP_STORE_MODULE_NAME)) store.registerModule(TIMEKEEPING_APP_STORE_MODULE_NAME, timekeepingStoreModule)
+
+        // UnRegister on leave
+        onUnmounted(() => {
+            if (store.hasModule(TIMEKEEPING_APP_STORE_MODULE_NAME)) store.unregisterModule(TIMEKEEPING_APP_STORE_MODULE_NAME)
+        })
+
+        const faceInfoField = [
+            { label: 'Số Thẻ', key: "cardNum", sortable: true, withDefaults: 200, },
+            { label: 'Mã Nhân Viên', key: "personNo", sortable: true, with: 200 },
+            { label: 'Họ Tên', key: "personName", sortable: false, with: 200 },
+            { label: 'Tên thiết bị', key: "deviceName", sortable: true },
+            { label: 'Tên vị trí', key: "doorName", sortable: true },
+            { label: 'Thời gian Upload dữ liệu', key: "inTime", sortable: true },
+            { label: 'Hình ảnh', key: "pictureFile", sortable: true },
         ];
+        const {
+            fetchHrBoxDoorRecords,
+            perPage,
+            currentPage,
+            totalInvoices,
+            perPageOptions,
+            searchQuery,
+            sortBy,
+            isSortDirDesc,
+            refInvoiceListTable,
+            statusFilter,
+            refetchData,
+            dataHrBoxRecordMeta
+        } = timekeepingDayList();
 
         return {
+            fetchHrBoxDoorRecords,
+            perPage,
+            currentPage,
+            totalInvoices,
+            perPageOptions,
+            searchQuery,
+            sortBy,
+            isSortDirDesc,
+            refInvoiceListTable,
+            statusFilter,
+            refetchData,
+            dataHrBoxRecordMeta,
             faceInfoField,
         }
     },

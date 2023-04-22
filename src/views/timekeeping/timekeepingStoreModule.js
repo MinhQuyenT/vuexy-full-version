@@ -14,37 +14,29 @@ export default {
           .catch(error => reject(error))
       })
     },
-    fetchInvoice(ctx, { id }) {
-      return new Promise((resolve, reject) => {
+    fetchSystemCode(){
+      return new Promise((resolve,reject)=>{
         axios
-          .get(`/apps/invoice/invoices/${id}`)
-          .then(response => resolve(response))
-          .catch(error => reject(error))
+        .get('/systemCode')
+        .then(response=> resolve(response))
+        .catch(error=>reject(error))
       })
     },
-    fetchClients() {
-      return new Promise((resolve, reject) => {
+    fetchSystemDepartment(){
+      return new Promise((resolve,reject)=>{
         axios
-          .get('/apps/invoice/clients')
-          .then(response => resolve(response))
-          .catch(error => reject(error))
+        .get('/systemDepartment')
+        .then(response=> resolve(response))
+        .catch(error=>reject(error))
       })
     },
-    // addUser(ctx, userData) {
-    //   return new Promise((resolve, reject) => {
-    //     axios
-    //       .post('/apps/user/users', { user: userData })
-    //       .then(response => resolve(response))
-    //       .catch(error => reject(error))
-    //   })
-    // },
+    fetchHrBoxDoorRecord(){
+      return new Promise((resolve,reject)=>{
+        axios
+        .get('/hrBoxDoorRecord/page?personName=TRAN MINH QUYEN陈明权')
+        .then(response=> resolve(response))
+        .catch(error=>reject(error))
+      })
+    }
   },
 }
-
-// export function getHrBoxDoorRecord(params){
-//   return axios({
-//     url: "http://192.168.5.42:99/api/hrBoxDoorRecord",
-//     method: "get",
-//     params: params
-//   });
-// }

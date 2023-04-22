@@ -10,13 +10,14 @@ export default function timekeepingDayList() {
   const toast = useToast();
 
   const refInvoiceListTable = ref(null);
+  const refHrBoxRecordListTable = ref(null);
 
   // Table Handlers
   const tableColumns = [
-    { label:'STT', key: "STT", sortable: true, withDefaults:200,  },
+    { label:'STT', key: "stt", sortable: true, withDefaults:200,  },
     { label:'Ngày', key: "day", sortable: true, with:200 },
-    { label:'Thứ', key: "Thứ", sortable: true },
-    { label:'Mã Nhân Viên', key: "employeeId", sortable: true, formatter: (val) => `$${val}`, with:200 },
+    { label:'Thứ', key: "th", sortable: true },
+    { label:'Mã Nhân Viên', key: "employeeId", sortable: true, },
     { label:'Họ Tên', key: "fullName", sortable: false,with:200  },
     { label:'Phòng Ban', key: "department", sortable: true },
     { label:'Ca Làm', key: "shift", sortable: true },
@@ -51,17 +52,29 @@ export default function timekeepingDayList() {
     };
   });
 
+  const dataHrBoxRecordMeta = computed(() => {
+    const localItemsCount = refHrBoxRecordListTable.value
+      ? refHrBoxRecordListTable.value.localItems.length
+      : 0;
+    return {
+      from: perPage.value * (currentPage.value - 1) + (localItemsCount ? 1 : 0),
+      to: perPage.value * (currentPage.value - 1) + localItemsCount,
+      of: totalInvoices.value,
+    };
+  });
+
   const refetchData = () => {
     refInvoiceListTable.value.refresh();
+    refHrBoxRecordListTable.value.refresh();
   };
 
   watch([currentPage, perPage, searchQuery, statusFilter], () => {
     refetchData();
   });
 
-  const fetchTimekeepings = (ctx, callback) => {
+  const fetchHrBoxDoorRecords = (ctx, callback) => {
     store
-      .dispatch("/hrBoxDoorRecord", {
+      .dispatch("timekeeping/fetchHrBoxDoorRecord", {
         q: searchQuery.value,
         perPage: perPage.value,
         page: currentPage.value,
@@ -70,9 +83,8 @@ export default function timekeepingDayList() {
         status: statusFilter.value,
       })
       .then((response) => {
-        console.log(response);
+        debugger
         const { invoices, total } = response.data;
-
         callback(invoices);
         totalInvoices.value = total;
       })
@@ -87,6 +99,42 @@ export default function timekeepingDayList() {
         });
       });
   };
+
+  const fetchSystemCode = (ctx,callback)=>{
+    store.dispatch('timekeeping/fetchSystemCode').then((response) => {
+      const data = response.data;
+      callback(data);
+    }).catch(() => {
+        toast({
+          component: ToastificationContent,
+          props: {
+            title: "Error fetching system code' list",
+            icon: "AlertTriangleIcon",
+            variant: "danger",
+          },
+        });
+      });
+  }
+
+  const tableData = [{
+    stt:1,
+    day: '2023/04/21 12:45:00',
+    th: 'Thứ 7',
+    employeeId:'I202304030001',
+    fullName:'Trần Minh Quyền',
+    department:'IT Department',
+    shift: 'Ngày',
+    tg1: '7:30',
+    tg2: '11:30',
+    tg3: '00:00',
+    tg4: '00:00',
+    buthe:'',
+    leaveDay: 4,
+    totalLeaveDay: 4,
+    status:'Hoàn thành',
+    note:'',
+    actions:'',
+  }];
 
   const optionsShift = [
     { value: '0', text: 'Vui lòng chọn' },
@@ -104,7 +152,7 @@ export default function timekeepingDayList() {
   ]
 
   return {
-    fetchTimekeepings,
+    fetchHrBoxDoorRecords,
     tableColumns,
     perPage,
     currentPage,
@@ -119,5 +167,8 @@ export default function timekeepingDayList() {
     optionsShift,
     optionsDepartment,
     refetchData,
+    tableData,
+    fetchSystemCode,
+    dataHrBoxRecordMeta
   };
 }
