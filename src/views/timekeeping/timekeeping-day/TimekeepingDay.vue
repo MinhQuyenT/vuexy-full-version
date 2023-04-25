@@ -3,7 +3,7 @@
     <div class="grid-content" style="padding-top: 0; padding-left: 2px;">
       <b-button variant="relief-info" class="mr-1">Tra Cứu</b-button>
       <b-button variant="relief-warning" class="mr-1">Tính Toán</b-button>
-      <b-button v-b-toggle.sidebar-backdrop variant="relief-success" class="mr-1">Xuất File</b-button>
+      <b-button  variant="relief-success" class="mr-1">Xuất File</b-button>
     </div>
     <b-card class="text-center border" style="padding: 0!important;">
       <table-timekeeping-day></table-timekeeping-day>
@@ -21,15 +21,7 @@ import SibarDetail from "./SibarDetail.vue";
 export default {
   data() {
     return {
-      rules: {
-        region: [
-          {
-            required: true,
-            message: "Please select Activity zone",
-            trigger: "change",
-          },
-        ],
-      },
+     
     };
   },
   components: { BRow, BCol, BCard, BButton, VBToggle, TableTimekeepingDay, SibarDetail },

@@ -5,6 +5,16 @@ import store from "@/store";
 import { useToast } from "vue-toastification/composition";
 import ToastificationContent from "@core/components/toastification/ToastificationContent.vue";
 
+export function useTimekeepingHandle(props, emit){
+  const taskLocal = ref(JSON.parse(JSON.stringify(props.task.value)))
+  const resetTaskLocal = () => {
+    taskLocal.value = JSON.parse(JSON.stringify(props.task.value))
+  }
+  watch(props.task, () => {
+    resetTaskLocal()
+  })
+}
+
 export default function timekeepingDayList() {
   // Use toast
   const toast = useToast();
@@ -12,22 +22,43 @@ export default function timekeepingDayList() {
   const refInvoiceListTable = ref(null);
   const refHrBoxRecordListTable = ref(null);
 
+  const dayOfWeek = (day)=> {
+    switch (day) {
+     case "0":
+       return "Thứ Hai";
+     case "1":
+       return "Thứ Ba";
+     case "2":
+       return "Thứ Tư";
+     case "3":
+       return "Thứ Năm";
+     case "4":
+       return "Thứ Sáu";
+     case "5":
+       return "Thứ Bảy";
+     case "6":
+       return "Chủ Nhật";
+     default:
+       return "";
+    }
+ }
+
   // Table Handlers
   const tableColumns = [
-    { label:'STT', key: "stt", sortable: true, withDefaults:200,  },
-    { label:'Ngày', key: "day", sortable: true, with:200 },
-    { label:'Thứ', key: "th", sortable: true },
-    { label:'Mã Nhân Viên', key: "employeeId", sortable: true, },
-    { label:'Họ Tên', key: "fullName", sortable: false,with:200  },
-    { label:'Phòng Ban', key: "department", sortable: true },
-    { label:'Ca Làm', key: "shift", sortable: true },
-    { label:'Thời Gian 1', key: "tg1", sortable: true },
-    { label:'Thời Gian 2', key: "tg2", sortable: true },
-    { label:'Thời Gian 3', key: "tg3", sortable: true },
-    { label:'Thời Gian 4', key: "tg4", sortable: true },
+    { label:'STT', key: "stt", sortable: true, withDefaults:200, formatter: val => `${dayOfWeek(val)}`  },
+    { label:'Ngày', key: "trackingDate", sortable: true, with:200 },
+    { label:'Thứ', key: "dayOfWeek", sortable: true, formatter: val => `${dayOfWeek(val)}` },
+    { label:'Mã Nhân Viên', key: "personNo", sortable: true, },
+    { label:'Họ Tên', key: "personName", sortable: false,with:200  },
+    { label:'Bộ Phận', key: "orgName", sortable: true },
+    { label:'Ca Làm', key: "shiftName", sortable: true },
+    { label:'Thời Gian 1', key: "time1", sortable: true, formatter: val => `${val ? val: 0}` },
+    { label:'Thời Gian 2', key: "time2", sortable: true, formatter: val => `${val ? val: 0}` },
+    { label:'Thời Gian 3', key: "time3", sortable: true, formatter: val => `${val ? val: 0}` },
+    { label:'Thời Gian 4', key: "time4", sortable: true, formatter: val => `${val ? val: 0}` },
     { label:'Bù Thẻ', key: "buthe", sortable: true },
     { label:'Nghỉ Phép', key: "leaveDay", sortable: true },
-    { label:'Số Tiếng Nghỉ Phép', key: "totalLeaveDay", sortable: true },
+    { label:'Số Giờ Làm', key: "workHours", sortable: true },
     { label:'Trang Thái', key: "status", sortable: true },
     { label:'Ghi Chú', key: "note", sortable: true },
     { label:'actions', key: "actions" },
@@ -67,6 +98,8 @@ export default function timekeepingDayList() {
     refInvoiceListTable.value.refresh();
     refHrBoxRecordListTable.value.refresh();
   };
+
+  
 
   watch([currentPage, perPage, searchQuery, statusFilter], () => {
     refetchData();

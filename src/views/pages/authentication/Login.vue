@@ -46,8 +46,8 @@
           <validation-observer ref="loginForm" #default="{ invalid }">
             <b-form class="auth-login-form mt-2" @submit.prevent="login">
               <!-- email -->
-              <b-form-group label="Username" label-for="login-username">
-                <validation-provider #default="{ errors }" name="username" vid="username" rules="required|username">
+              <b-form-group label="Tài khoản" label-for="login-username">
+                <validation-provider #default="{ errors }" name="username" vid="username" rules="required">
                   <b-form-input id="login-username" v-model="username" :state="errors.length > 0 ? false : null"
                     name="login-username" placeholder="S.Power" />
                   <small class="text-danger">{{ errors[0] }}</small>
@@ -57,7 +57,7 @@
               <!-- forgot password -->
               <b-form-group>
                 <div class="d-flex justify-content-between">
-                  <label for="login-password">Password</label>
+                  <label for="login-password">Mật khẩu</label>
                   <b-link :to="{ name: 'auth-forgot-password' }">
                     <small>Quên mật khẩu?</small>
                   </b-link>
@@ -192,57 +192,79 @@ export default {
   methods: {
     login() {
       this.$refs.loginForm.validate().then(success => {
-        debugger
         if (success) {
           useJwt.login({
             password: this.password, username: this.userEmail,
           })
             .then(response => {
-
-              const obj = {
-                id: 1,
-                fullName: response.data.userInfo,
-                username: this.user,
-                avatar: "/img/13-small.d796bffd.png",
-                email: "Test@123.com",
-                role: "admin",
-                ability: [
-                  {
-                    action: "manage",
-                    subject: "all"
-                  }
-                ],
-                extras: {
-                  "eCommerceCartItemsCount": 5
-                }
-              }
-
-              const { userData } = response.data
-              useJwt.setToken(response.data.accessToken)
-              useJwt.setRefreshToken(response.data.accessToken)
-              localStorage.setItem('userData', JSON.stringify(obj))
-              this.$ability.update(obj.ability)
-
-              // ? This is just for demo purpose as well.
-              // ? Because we are showing eCommerce app's cart items count in navbar
-              this.$store.commit('app-ecommerce/UPDATE_CART_ITEMS_COUNT', obj.extras.eCommerceCartItemsCount)
-
-              // ? This is just for demo purpose. Don't think CASL is role based in this case, we used role in if condition just for ease
-              this.$router.replace(getHomeRouteForLoggedInUser(obj.role))
-                .then(() => {
-                  this.$toast({
-                    component: ToastificationContent,
-                    position: 'top-right',
-                    props: {
-                      title: `Xin chào ${userData.fullName || userData.username}`,
-                      icon: 'CoffeeIcon',
-                      variant: 'success',
-                      text: `Bạn đã đăng nhập thành công với tài khoản ${userData.role}. Bây giờ bạn có thể sử dụng!`,
-                    },
-                  })
+              
+              if (response.code == -1) {
+                this.$toast({
+                  component: ToastificationContent,
+                  position: 'top-right',
+                  props: {
+                    title: `Đăng nhập thất bại`,
+                    icon: 'ConnectIcon',
+                    variant: 'warning',
+                    text: `Vui lòng Kiểm tra lại tài khoản hoặc mật khẩu!`,
+                  },
                 })
+              } else {
+                const obj = {
+                  id: 1,
+                  fullName: "Admin",
+                  username: "Admin",
+                  avatar: response.data.img,
+                  email: "Test@123.com",
+                  role: "admin",
+                  ability: [
+                    {
+                      action: "manage",
+                      subject: "all"
+                    }
+                  ],
+                  extras: {
+                    "eCommerceCartItemsCount": 5
+                  }
+                }
+
+                const { userData } = response.data
+                useJwt.setToken(response.data.accessToken)
+                useJwt.setRefreshToken(response.data.accessToken)
+                localStorage.setItem('userData', JSON.stringify(obj))
+                this.$ability.update(obj.ability)
+
+                // ? This is just for demo purpose as well.
+                // ? Because we are showing eCommerce app's cart items count in navbar
+                this.$store.commit('app-ecommerce/UPDATE_CART_ITEMS_COUNT', obj.extras.eCommerceCartItemsCount)
+
+                // ? This is just for demo purpose. Don't think CASL is role based in this case, we used role in if condition just for ease
+                this.$router.replace(getHomeRouteForLoggedInUser(obj.role))
+                  .then(() => {
+                    this.$toast({
+                      component: ToastificationContent,
+                      position: 'top-right',
+                      props: {
+                        title: `Xin chào ${obj.fullName || obj.username}`,
+                        icon: 'CoffeeIcon',
+                        variant: 'success',
+                        text: `Bạn đã đăng nhập thành công với tài khoản ${obj.role}. Bây giờ bạn có thể sử dụng!`,
+                      },
+                    })
+                  })
+              }
             }).catch(error => {
-              debugger;
+              debugger
+              this.$toast.error({
+                component: ToastificationContent,
+                position: 'top-right',
+                props: {
+                  title: `Không thể kết nối tới máy chủ`,
+                  icon: 'ConnectIcon',
+                  variant: 'Error',
+                  text: `Không thể kết nối tới máy chủ. Vui lòng liên hệ IT!`,
+                },
+              })
               this.$refs.loginForm.setErrors(error.response?.data?.error)
             })
         }

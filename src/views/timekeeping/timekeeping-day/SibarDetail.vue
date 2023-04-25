@@ -1,10 +1,10 @@
 <template>
-    <b-sidebar id="sidebar-backdrop" title="Sidebar with backdrop" sidebar-class="sidebar-lg" bg-variant="white" shadow
-        backdrop right no-header>
+    <b-sidebar id="sidebar-backdrop" :visible="isTaskHandlerSidebarActive" title="Sidebar with backdrop"
+        sidebar-class="sidebar-lg" bg-variant="white" shadow backdrop right no-header>
         <div class="">
             <template>
                 <!-- Header -->
-                <div class="d-flex justify-content-between align-items-center content-sidebar-header px-2 py-1">
+                <div class="d-flex justify-content-between  content-sidebar-header px-2 py-1">
                     <h5 class="mb-0">THÔNG TIN CHI TIẾT</h5>
                     <div>
                         <feather-icon class="ml-1 cursor-pointer" icon="XIcon" size="16" />
@@ -24,12 +24,12 @@
                                             <strong>Họ tên: </strong> Nguyễn Văn A
                                         </h4>
                                         <span class="card-text mb-1">
-                                            <strong>Ngày sinh: </strong> 01/01/2023
+                                            <strong>Ngày sinh: </strong> 13/05/1998
                                         </span>
                                     </div>
                                     <div class="d-flex flex-wrap">
                                         <span class="card-text mb-1">
-                                            <strong>Bộ phận: </strong> IT
+                                            <strong>Bộ phận: </strong>
                                         </span>
                                     </div>
                                 </div>
@@ -71,40 +71,18 @@
                 </b-card>
                 <b-row>
                     <b-col cols="12" lg="8">
-                        <b-card title="CHI TIẾT QUẸT GƯƠNG MẶT">
-                            <b-table show-empty empty-text="Không có dữ liệu" table-style="width: max-content !important; "
-                                style="min-height: 610px!important;" striped responsive :fields="faceInfoField" class="mb-0"
-                                :items="fetchHrBoxDoorRecords">
+                        <b-card title="CHI TIẾT QUẸT GƯƠNG MẶT" style="padding: 0;">
+                            <b-table style="height: 600px!important; width: 100%;!important" :no-border-collapse="true"
+                                :sticky-header="true" show-empty empty-text="Không có dữ liệu"
+                                table-style="width: 100%;!important" striped responsive :fields="faceInfoField" class="mb-0"
+                                :items="hrBoxDoorRecords">
                             </b-table>
-                            <div class="mx-2 mb-2">
-                                <b-row>
-                                    <b-col cols="12" sm="6"
-                                        class="d-flex align-items-center justify-content-center justify-content-sm-start">
-                                        <span class="text-muted">Showing {{ dataHrBoxRecordMeta.from }} to {{
-                                            dataHrBoxRecordMeta.to }} of
-                                            {{ dataHrBoxRecordMeta.of }} entries</span>
-                                    </b-col>
-                                    <!-- Pagination -->
-                                    <b-col cols="12" sm="6"
-                                        class="d-flex align-items-center justify-content-center justify-content-sm-end">
-                                        <b-pagination v-model="currentPage" :total-rows="totalInvoices" :per-page="perPage"
-                                            first-number last-number class="mb-0 mt-1 mt-sm-0" prev-class="prev-item"
-                                            next-class="next-item">
-                                            <template #prev-text>
-                                                <feather-icon icon="ChevronLeftIcon" size="18" />
-                                            </template>
-                                            <template #next-text>
-                                                <feather-icon icon="ChevronRightIcon" size="18" />
-                                            </template>
-                                        </b-pagination>
-                                    </b-col>
-                                </b-row>
-                            </div>
                         </b-card>
                     </b-col>
                     <b-col cols="12" lg="4">
                         <b-card title="DỮ LIỆU BÙ THẺ">
-                            <b-table striped responsive :fields="optiontb2" class="mb-0">
+                            <b-table striped responsive style="width: 100%!important" table-style="width: 100%!important"
+                                :no-border-collapse="true" :fields="optiontb2" :items="hrTimeRecorder" class="mb-0">
                             </b-table>
                         </b-card>
                         <b-card title="ĐĂNG KÝ NGHỈ PHÉP" style="padding-top: 0;">
@@ -127,7 +105,10 @@ import timekeepingStoreModule from "../timekeepingStoreModule";
 export default {
     data() {
         return {
+            hrBoxDoorRecords: [],
             hrBoxDoorRecord: {},
+            hrBoxDoorRecorders: [],
+            hrTimeRecorder: {},
             backdrop: false,
             option: [
                 {
@@ -160,25 +141,21 @@ export default {
             optiontb2: [
                 {
                     label: 'Ngày',
-                    key: 'date',
+                    key: 'swipeDate1',
                     sortable: true
                 },
                 {
                     label: 'Bù Phép',
-                    key: 'leave',
+                    key: 'swipeTime1',
                     sortable: true
                 },
                 {
-                    label: 'Loại Phép',
-                    key: 'leaveType',
-                    sortable: true
-                },
-                {
-                    label: 'Số Tiếng',
-                    key: 'sumH',
+                    label: 'Ghi chú',
+                    key: 'reason',
                     sortable: true
                 }
             ],
+
             data: [
                 {
                     date: "20/04/2023",
@@ -193,18 +170,43 @@ export default {
     },
     created() {
         this.getHrBoxDoorRecord();
-        console.log(this.fetchHrBoxDoorRecords());
+        this.getHrTimeRecorder();
     },
     methods: {
         getHrBoxDoorRecord() {
             this.$store.dispatch('timekeeping/fetchHrBoxDoorRecord').then((response) => {
-                this.hrBoxDoorRecord = response.data;
+                this.hrBoxDoorRecords = response.data.records;
+                this.hrBoxDoorRecord = this.hrBoxDoorRecord[0];
+                console.log(this.hrBoxDoorRecords);
+            })
+        },
+        getHrTimeRecorder() {
+            this.$store.dispatch('timekeeping/fetchHrTimeRecorder').then((response) => {
+                this.hrTimeRecorder = response.data;
             })
         }
-    },
 
+    },
     components: {
         BSidebar, ValidationObserver, BCard, BRow, BCol, BTable, BAvatar, BPagination
+    },
+    model: {
+        prop: 'isTaskHandlerSidebarActive',
+        event: 'update:is-task-handler-sidebar-active',
+    },
+    props: {
+        isTaskHandlerSidebarActive: {
+            type: Boolean,
+            required: true,
+        },
+        items: {
+            type: Object,
+            required: true,
+        },
+        // clearTaskData: {
+        //     type: Function,
+        //     required: true,
+        // },
     },
     setup() {
 
@@ -221,13 +223,9 @@ export default {
         })
 
         const faceInfoField = [
-            { label: 'Số Thẻ', key: "cardNum", sortable: true, withDefaults: 200, },
-            { label: 'Mã Nhân Viên', key: "personNo", sortable: true, with: 200 },
-            { label: 'Họ Tên', key: "personName", sortable: false, with: 200 },
             { label: 'Tên thiết bị', key: "deviceName", sortable: true },
             { label: 'Tên vị trí', key: "doorName", sortable: true },
-            { label: 'Thời gian Upload dữ liệu', key: "inTime", sortable: true },
-            { label: 'Hình ảnh', key: "pictureFile", sortable: true },
+            { label: 'Thời gian quẹt gương mặt', key: "inTime", sortable: true },
         ];
         const {
             fetchHrBoxDoorRecords,
@@ -264,9 +262,15 @@ export default {
 </script>
 <style lang="scss">
 /* Busy table styling */
-table.b-table[aria-busy="false"] {
-    width: max-content !important;
+// table.b-table[aria-busy="false"] {
+//     width: 100%!important;
+// }
+
+.b-table-sticky-header {
+    max-height: 600px;
 }
+
+
 
 .b-sidebar>.b-sidebar-body {
     flex-grow: 1;
