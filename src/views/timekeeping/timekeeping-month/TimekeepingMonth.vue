@@ -111,7 +111,6 @@ import {
 import { onUnmounted } from "@vue/composition-api";
 import store from "@/store";
 import data from "./data";
-import timekeepingStoreModule from "../timekeepingStoreModule";
 export default {
   name: 'TimekeepingMoth',
   components: {
@@ -154,7 +153,6 @@ export default {
 
     // Register module
     if (!store.hasModule(INVOICE_APP_STORE_MODULE_NAME))
-      store.registerModule(INVOICE_APP_STORE_MODULE_NAME, timekeepingStoreModule);
 
     // UnRegister on leave
     onUnmounted(() => {
