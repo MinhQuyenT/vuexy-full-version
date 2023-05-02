@@ -3,7 +3,6 @@ import Vuex from 'vuex'
 
 // Modules
 import ecommerceStoreModule from '@/views/apps/e-commerce/eCommerceStoreModule'
-import timekeepingStoreModule from '@/views/timekeeping/timekeepingStoreModule'
 import app from './app'
 import appConfig from './app-config'
 import verticalMenu from './vertical-menu'
@@ -16,7 +15,6 @@ export default new Vuex.Store({
     appConfig,
     verticalMenu,
     'app-ecommerce': ecommerceStoreModule,
-    'timekeeping' : timekeepingStoreModule
   },
   strict: process.env.DEV,
 })
