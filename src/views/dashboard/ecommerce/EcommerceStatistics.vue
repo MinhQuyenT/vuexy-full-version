@@ -5,10 +5,43 @@
     class="card-statistics"
   >
     <b-card-header>
-      <b-card-title>Statistics</b-card-title>
-      <b-card-text class="font-small-2 mr-25 mb-0">
-        Updated 1 month ago
-      </b-card-text>
+      <b-card-title>Thông tin chấm công</b-card-title>
+      <b-col
+        md="3"
+      >
+        <b-dropdown
+          v-model="yearVal"
+          :text="yearVal"
+          size="sm"
+          class="budget-dropdown mr-2"
+          variant="outline-primary"
+          split
+          @click.native="changeYear"
+        >
+          <b-dropdown-item
+            v-for="year in years"
+            :key="year"
+          >
+            {{ year }}
+          </b-dropdown-item>
+        </b-dropdown>
+        <b-dropdown
+          v-model="monthVal"
+          :text="monthVal"
+          size="sm"
+          class="budget-dropdown"
+          variant="outline-primary"
+          split
+          @click.native="changeMonth"
+        >
+          <b-dropdown-item
+            v-for="month in months"
+            :key="month"
+          >
+            {{ month }}
+          </b-dropdown-item>
+        </b-dropdown>
+      </b-col>
     </b-card-header>
     <b-card-body class="statistics-body">
       <b-row>
@@ -51,11 +84,25 @@
 
 <script>
 import {
-  BCard, BCardHeader, BCardTitle, BCardText, BCardBody, BRow, BCol, BMedia, BMediaAside, BAvatar, BMediaBody,
+  BCard,
+  BCardHeader,
+  BCardTitle,
+  BCardText,
+  BCardBody,
+  BRow,
+  BCol,
+  BMedia,
+  BMediaAside,
+  BAvatar,
+  BMediaBody,
+  BDropdown,
+  BDropdownItem,
 } from 'bootstrap-vue'
 
 export default {
   components: {
+    BDropdownItem,
+    BDropdown,
     BRow,
     BCol,
     BCard,
@@ -72,6 +119,39 @@ export default {
     data: {
       type: Array,
       default: () => [],
+    },
+    years: Array,
+    months: Array,
+  },
+  data() {
+    return {
+      yearVal: '2023',
+      monthVal: '4',
+    }
+  },
+  mounted() {
+    const d = new Date()
+    this.yearVal(d.getFullYear())
+    this.monthVal(d.getMonth())
+  },
+  methods: {
+    change() {
+      this.$emit('changeDate', {
+        year: this.yearVal,
+        month: this.monthVal,
+      })
+      console.log({
+        year: this.yearVal,
+        month: this.monthVal,
+      })
+    },
+    changeYear(val) {
+      this.yearVal = val.target.innerText.trim()
+      this.change()
+    },
+    changeMonth(val) {
+      this.monthVal = val.target.innerText.trim(),
+      this.change()
     },
   },
 }
