@@ -6,17 +6,17 @@
     <b-row>
       <b-col cols="6">
         <b-card-title class="mb-1">
-          Earnings
+          Tỷ lệ sử dụng chấm công
         </b-card-title>
         <div class="font-small-2">
-          This Month
+          Trong tháng này
         </div>
         <h5 class="mb-1">
-          $4055.56
+          {{data.title}}
         </h5>
-        <b-card-text class="text-muted font-small-2">
-          <span class="font-weight-bolder">68.2%</span><span> more earnings than last month.</span>
-        </b-card-text>
+<!--        <b-card-text class="text-muted font-small-2">-->
+<!--          <span class="font-weight-bolder">68.2%</span><span> more earnings than last month.</span>-->
+<!--        </b-card-text>-->
       </b-col>
       <b-col cols="6">
         <!-- chart -->
@@ -69,7 +69,7 @@ export default {
           },
           legend: { show: false },
           comparedResult: [2, -3, 8],
-          labels: ['App', 'Service', 'Product'],
+          labels: [ 'Đã sử dụng', 'Chưa sử dụng'],
           stroke: { width: 0 },
           colors: [$earningsStrokeColor2, $earningsStrokeColor3, $themeColors.success],
           grid: {
@@ -98,9 +98,9 @@ export default {
                   total: {
                     show: true,
                     offsetY: 15,
-                    label: 'App',
+                    label: '',
                     formatter() {
-                      return '53%'
+                      return ''
                     },
                   },
                 },
