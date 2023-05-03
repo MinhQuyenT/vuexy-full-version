@@ -1,20 +1,14 @@
 <template>
-  <div
-    id="app"
-    class="h-100"
-    :class="[skinClasses]"
-  >
-    <component :is="layout">
-      <router-view />
-    </component>
-
-    <scroll-to-top v-if="enableScrollToTop" />
-  </div>
+    <div id="app" class="h-100" :class="[skinClasses]">
+      <component :is="layout">
+        <router-view />
+      </component>
+      <scroll-to-top v-if="enableScrollToTop" />
+    </div>
 </template>
 
 <script>
 import ScrollToTop from '@core/components/scroll-to-top/ScrollToTop.vue'
-
 // This will be populated in `beforeCreate` hook
 import { $themeColors, $themeBreakpoints, $themeConfig } from '@themeConfig'
 import { provideToast } from 'vue-toastification/composition'

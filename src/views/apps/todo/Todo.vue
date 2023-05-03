@@ -1,11 +1,7 @@
 <template>
   <!-- Need to add height inherit because Vue 2 don't support multiple root ele -->
   <div style="height: inherit">
-    <div
-      class="body-content-overlay"
-      :class="{'show': mqShallShowLeftSidebar}"
-      @click="mqShallShowLeftSidebar = false"
-    />
+    <div class="body-content-overlay" :class="{ 'show': mqShallShowLeftSidebar }" @click="mqShallShowLeftSidebar = false" />
     <div class="todo-app-list">
 
       <!-- App Searchbar Header -->
@@ -13,45 +9,24 @@
 
         <!-- Toggler -->
         <div class="sidebar-toggle d-block d-lg-none ml-1">
-          <feather-icon
-            icon="MenuIcon"
-            size="21"
-            class="cursor-pointer"
-            @click="mqShallShowLeftSidebar = true"
-          />
+          <feather-icon icon="MenuIcon" size="21" class="cursor-pointer" @click="mqShallShowLeftSidebar = true" />
         </div>
 
         <!-- Searchbar -->
         <div class="d-flex align-content-center justify-content-between w-100">
           <b-input-group class="input-group-merge">
             <b-input-group-prepend is-text>
-              <feather-icon
-                icon="SearchIcon"
-                class="text-muted"
-              />
+              <feather-icon icon="SearchIcon" class="text-muted" />
             </b-input-group-prepend>
-            <b-form-input
-              :value="searchQuery"
-              placeholder="Search task"
-              @input="updateRouteQuery"
-            />
+            <b-form-input :value="searchQuery" placeholder="Search task" @input="updateRouteQuery" />
           </b-input-group>
         </div>
 
         <!-- Dropdown -->
         <div class="dropdown">
-          <b-dropdown
-            variant="link"
-            no-caret
-            toggle-class="p-0 mr-1"
-            right
-          >
+          <b-dropdown variant="link" no-caret toggle-class="p-0 mr-1" right>
             <template #button-content>
-              <feather-icon
-                icon="MoreVerticalIcon"
-                size="16"
-                class="align-middle text-body"
-              />
+              <feather-icon icon="MoreVerticalIcon" size="16" class="align-middle text-body" />
             </template>
             <b-dropdown-item @click="resetSortAndNavigate">
               Reset Sort
@@ -73,100 +48,51 @@
       </div>
 
       <!-- Todo List -->
-      <vue-perfect-scrollbar
-        :settings="perfectScrollbarSettings"
-        class="todo-task-list-wrapper list-group scroll-area"
-      >
-        <draggable
-          v-model="tasks"
-          handle=".draggable-task-handle"
-          tag="ul"
-          class="todo-task-list media-list"
-        >
-          <li
-            v-for="task in tasks"
-            :key="task.id"
-            class="todo-item"
-            :class="{ 'completed': task.isCompleted }"
-            @click="handleTaskClick(task)"
-          >
-            <feather-icon
-              icon="MoreVerticalIcon"
-              class="draggable-task-handle d-inline"
-            />
+      <vue-perfect-scrollbar :settings="perfectScrollbarSettings" class="todo-task-list-wrapper list-group scroll-area">
+        <draggable v-model="tasks" handle=".draggable-task-handle" tag="ul" class="todo-task-list media-list">
+          <li v-for="task in tasks" :key="task.id" class="todo-item" :class="{ 'completed': task.isCompleted }"
+            @click="handleTaskClick(task)">
+            <feather-icon icon="MoreVerticalIcon" class="draggable-task-handle d-inline" />
             <div class="todo-title-wrapper">
               <div class="todo-title-area">
                 <div class="title-wrapper">
-                  <b-form-checkbox
-                    :checked="task.isCompleted"
-                    @click.native.stop
-                    @change="updateTaskIsCompleted(task)"
-                  />
+                  <b-form-checkbox :checked="task.isCompleted" @click.native.stop @change="updateTaskIsCompleted(task)" />
                   <span class="todo-title">{{ task.title }}</span>
                 </div>
               </div>
               <div class="todo-item-action">
                 <div class="badge-wrapper mr-1">
-                  <b-badge
-                    v-for="tag in task.tags"
-                    :key="tag"
-                    pill
-                    :variant="`light-${resolveTagVariant(tag)}`"
-                    class="text-capitalize"
-                  >
+                  <b-badge v-for="tag in task.tags" :key="tag" pill :variant="`light-${resolveTagVariant(tag)}`"
+                    class="text-capitalize">
                     {{ tag }}
                   </b-badge>
                 </div>
-                <small class="text-nowrap text-muted mr-1">{{ formatDate(task.dueDate, { month: 'short', day: 'numeric'}) }}</small>
-                <b-avatar
-                  v-if="task.assignee"
-                  size="32"
-                  :src="task.assignee.avatar"
-                  :variant="`light-${resolveAvatarVariant(task.tags)}`"
-                  :text="avatarText(task.assignee.fullName)"
-                />
-                <b-avatar
-                  v-else
-                  size="32"
-                  variant="light-secondary"
-                >
-                  <feather-icon
-                    icon="UserIcon"
-                    size="16"
-                  />
+                <small class="text-nowrap text-muted mr-1">{{ formatDate(task.dueDate, { month: 'short', day: 'numeric' })
+                }}</small>
+                <b-avatar v-if="task.assignee" size="32" :src="task.assignee.avatar"
+                  :variant="`light-${resolveAvatarVariant(task.tags)}`" :text="avatarText(task.assignee.fullName)" />
+                <b-avatar v-else size="32" variant="light-secondary">
+                  <feather-icon icon="UserIcon" size="16" />
                 </b-avatar>
               </div>
             </div>
 
           </li>
         </draggable>
-        <div
-          class="no-results"
-          :class="{'show': !tasks.length}"
-        >
+        <div class="no-results" :class="{ 'show': !tasks.length }">
           <h5>No Items Found</h5>
         </div>
       </vue-perfect-scrollbar>
     </div>
 
     <!-- Task Handler -->
-    <todo-task-handler-sidebar
-      v-model="isTaskHandlerSidebarActive"
-      :task="task"
-      :clear-task-data="clearTaskData"
-      @remove-task="removeTask"
-      @add-task="addTask"
-      @update-task="updateTask"
-    />
+    <todo-task-handler-sidebar v-model="isTaskHandlerSidebarActive" :task="task" :clear-task-data="clearTaskData"
+      @remove-task="removeTask" @add-task="addTask" @update-task="updateTask" />
 
     <!-- Sidebar -->
     <portal to="content-renderer-sidebar-left">
-      <todo-left-sidebar
-        :task-tags="taskTags"
-        :is-task-handler-sidebar-active.sync="isTaskHandlerSidebarActive"
-        :class="{'show': mqShallShowLeftSidebar}"
-        @close-left-sidebar="mqShallShowLeftSidebar = false"
-      />
+      <todo-left-sidebar :task-tags="taskTags" :is-task-handler-sidebar-active.sync="isTaskHandlerSidebarActive"
+        :class="{ 'show': mqShallShowLeftSidebar }" @close-left-sidebar="mqShallShowLeftSidebar = false" />
     </portal>
   </div>
 </template>
@@ -245,7 +171,7 @@ export default {
 
       delete currentRouteQuery.sort
 
-      router.replace({ name: route.name, query: currentRouteQuery }).catch(() => {})
+      router.replace({ name: route.name, query: currentRouteQuery }).catch(() => { })
     }
 
     const blankTask = {
@@ -400,16 +326,16 @@ export default {
 
 <style lang="scss" scoped>
 .draggable-task-handle {
-position: absolute;
-    left: 8px;
-    top: 50%;
-    transform: translateY(-50%);
-    visibility: hidden;
-    cursor: move;
+  position: absolute;
+  left: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  visibility: hidden;
+  cursor: move;
 
-    .todo-task-list .todo-item:hover & {
-      visibility: visible;
-    }
+  .todo-task-list .todo-item:hover & {
+    visibility: visible;
+  }
 }
 </style>
 

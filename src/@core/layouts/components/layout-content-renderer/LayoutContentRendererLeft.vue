@@ -13,9 +13,9 @@
         class="content-area-wrapper"
         :class="contentWidth === 'boxed' ? 'container p-0' : null"
       >
-        <slot name="breadcrumb">
+        <!-- <slot name="breadcrumb">
           <app-breadcrumb />
-        </slot>
+        </slot> -->
         <portal-target
           name="content-renderer-sidebar-left"
           slim

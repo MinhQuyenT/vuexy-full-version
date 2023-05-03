@@ -21,30 +21,30 @@ export function tableColumn (_this){
         }
      }
     return [
-        { label:'STT', key: "index", sortable: true, with:200,  },
-        { label:'Ngày', key: "trackingDate", sortable: true, with:200, formatter:val=> `${val}` },
-        { label:'Thứ', key: "dayOfWeek", sortable: true, formatter: val => `${dayOfWeek(val)}` },
-        { label:'Mã Nhân Viên', key: "personNo", sortable: true, },
-        { label:'Họ Tên', key: "personName", sortable: false,with:200  },
-        { label:'Bộ Phận', key: "orgName", sortable: true },
+        { label:'STT', key: "index", sortable: true, thStyle: { width: 200 }, tdClass:'text-left'  },
+        { label:'Ngày', key: "trackingDate", sortable: true, with:200, formatter:val=> `${val}`, tdClass:'text-left' },
+        { label:'Thứ', key: "dayOfWeek", sortable: true, formatter: val => `${dayOfWeek(val)}`, tdClass:'text-left' },
+        { label:'Mã Nhân Viên', key: "personNo", sortable: true, tdClass:'text-left'},
+        { label:'Họ Tên', key: "personName", sortable: false,with:200, tdClass:'text-left'  },
+        { label:'Bộ Phận', key: "orgName", sortable: true, tdClass:'text-left' },
         { label:'Ca Làm', key: "shiftName", sortable: true },
-        { label:'Thời Gian 1', key: "time1", sortable: true, formatter: val => `${val ? val: ''}` },
-        { label:'Thời Gian 2', key: "time2", sortable: true, formatter: val => `${val ? val: ''}` },
-        { label:'Thời Gian 3', key: "time3", sortable: true, formatter: val => `${val ? val: ''}` },
-        { label:'Thời Gian 4', key: "time4", sortable: true, formatter: val => `${val ? val: ''}` },
-        { label:'Số Giờ Làm', key: "workHours", sortable: true },
-        { label:'Bù Thẻ', key: "offset", sortable: true },
-        // { label:'Ca làm', key: "shiftId", sortable: true },
-        { label:'Trang Thái', key: "status", sortable: true },
-        { label:'Ghi Chú', key: "note", sortable: true },
+        { label:'Thời Gian 1', key: "time1", sortable: true, formatter: val => `${val ? val: ''}`},
+        { label:'Thời Gian 2', key: "time2", sortable: true, formatter: val => `${val ? val: ''}`},
+        { label:'Thời Gian 3', key: "time3", sortable: true, formatter: val => `${val ? val: ''}`},
+        { label:'Thời Gian 4', key: "time4", sortable: true, formatter: val => `${val ? val: ''}`},
+        { label:'Số Giờ Làm', key: "workHours", sortable: true ,tdClass:'text-left'},
+        { label:'Bù Thẻ', key: "offset", sortable: true ,tdClass:'text-left'},
+        { label:'Trang Thái', key: "status", sortable: true ,tdClass:'text-left'},
+        { label:'Ghi Chú', key: "note", sortable: true ,tdClass:'text-left'},
       ]
 }
 
 export function faceInfoField(_this){
   return [
-    { label: 'Tên thiết bị', key: "deviceName", sortable: true },
-    { label: 'Tên vị trí', key: "doorName", sortable: true },
-    { label: 'Thời gian quẹt gương mặt', key: "inTime", sortable: true },
+    { label:'STT', key: "index", sortable: true, tdClass:'text-left'  },
+    { label: 'Tên Thiết Bị', key: "deviceName", thStyle: { width: "250px" },  sortable: true },
+    { label: 'Tên Vị Trí', key: "doorName",thStyle: { width: "280px" }, sortable: true },
+    { label: 'Thời Gian Quẹt Gương Mặt', key: "inTime",thStyle: { width: "300px" }, sortable: true },
   ];
 }
 export function registerLeave(_this){
@@ -60,17 +60,12 @@ export function registerLeave(_this){
         sortable: true
     },
     {
-        label: 'Bù Phép',
-        key: 'leave',
-        sortable: true
-    },
-    {
         label: 'Loại Phép',
         key: 'leaveType',
         sortable: true
     },
     {
-        label: 'Số Tiếng nghỉ',
+        label: 'Số Tiếng Nghỉ',
         key: 'sumH',
         sortable: true
     }
@@ -78,6 +73,11 @@ export function registerLeave(_this){
 }
 export function offsetCard(_this){
   return [
+    {
+        label: 'STT',
+        key: 'index',
+        sortable: true
+    },
     {
         label: 'Ngày',
         key: 'date',
@@ -89,17 +89,10 @@ export function offsetCard(_this){
         sortable: true
     },
     {
-        label: 'Ghi chú',
+        label: 'Ghi Chú',
         key: 'reason',
         sortable: true
     }
 ]
 }
 
-
-// export function dataService(){
-
-//     getHrTrackingData() {
-
-//     }
-// }

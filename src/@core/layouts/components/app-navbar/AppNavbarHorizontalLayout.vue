@@ -12,7 +12,12 @@
 
     <!-- Left Col -->
     <div class="bookmark-wrapper align-items-center flex-grow-1 d-none d-lg-flex">
-      <bookmarks />
+      <!-- <bookmarks /> -->
+      <div class="content-wrapper clearfix" :class="'container p-0'" style="display: block!important;">
+        <slot name="breadcrumb">
+          <app-breadcrumb />
+        </slot>
+      </div>
     </div>
 
     <!-- Right Col -->
@@ -29,6 +34,7 @@
 import {
   BLink, BNavbarNav,
 } from 'bootstrap-vue'
+import AppBreadcrumb from '@core/layouts/components/AppBreadcrumb.vue'
 import Bookmarks from './components/Bookmarks.vue'
 import Locale from './components/Locale.vue'
 import DarkToggler from './components/DarkToggler.vue'
@@ -46,6 +52,7 @@ export default {
     DarkToggler,
     SearchBar,
     UserDropdown,
+    AppBreadcrumb
   },
   props: {
     toggleVerticalMenuActive: {
