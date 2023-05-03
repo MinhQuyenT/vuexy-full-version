@@ -1,7 +1,7 @@
 <template>
-    <b-sidebar id="sidebar-backdrop" :visible="isTaskHandlerSidebarActive" title="Sidebar with backdrop"
+    <b-sidebar id="sidebar-backdrop" :visible="isTaskHandlerSidebarActive" title="Sidebar with backdrop" :no-enforce-focus="true" :no-close-on-esc="true" :no-close-on-backdrop="true"
         @change="(val) => $emit('update:is-task-handler-sidebar-active', val)" sidebar-class="sidebar-lg" bg-variant="white"
-        shadow backdrop right no-header>
+        shadow backdrop right no-header @shown="(val) => $emit('update:is-task-handler-sidebar-active', val)">
         <template #default="{ hide }">
             <!-- Header -->
             <div class="d-flex justify-content-between  content-sidebar-header px-2 py-1">
@@ -75,20 +75,21 @@
                 <b-col cols="12" lg="8">
                     <b-card title="CHI TIẾT QUẸT GƯƠNG MẶT" style="padding: 0;">
                         <b-table style="height: 600px!important; width: 100%;!important" :no-border-collapse="true"
-                            :sticky-header="true" show-empty empty-text="Không có dữ liệu"
-                            table-style="width: max-content" striped responsive :fields="faceInfoField" :items="hrBoxDoorRecords" class="mb-0">
+                            :sticky-header="true" show-empty empty-text="Không có dữ liệu" table-style="width: max-content"
+                            striped responsive :fields="faceInfoField" :items="hrBoxDoorRecords" class="mb-0">
                         </b-table>
                     </b-card>
                 </b-col>
                 <b-col cols="12" lg="4">
-                    <b-card title="DỮ LIỆU BÙ THẺ">
+                    <b-card title="DỮ LIỆU BÙ THẺ" style="height: 50%;">
                         <b-table striped responsive style="width: 100%!important" table-style="width: 100%!important"
-                        :sticky-header="true" show-empty empty-text="Không có dữ liệu"
-                            :no-border-collapse="true" :fields="offsetCard" :items="hrTimeRecorder" class="mb-0">
+                            :sticky-header="true" show-empty empty-text="Không có dữ liệu" :no-border-collapse="true"
+                            :fields="offsetCard" :items="hrTimeRecorder" class="mb-0">
                         </b-table>
                     </b-card>
-                    <b-card title="ĐĂNG KÝ NGHỈ PHÉP" style="padding-top: 0;">
-                        <b-table striped responsive :fields="registerLeave" class="mb-0">
+                    <b-card title="ĐĂNG KÝ NGHỈ PHÉP" style="padding-top: 0; height: 50%;">
+                        <b-table striped responsive :fields="registerLeave" class="mb-0" show-empty
+                            empty-text="Không có dữ liệu">
                         </b-table>
                     </b-card>
                 </b-col>
@@ -101,6 +102,7 @@ import { BSidebar, BCard, BRow, BCol, BTable, BAvatar, BPagination } from "boots
 import { ValidationObserver } from "vee-validate";
 import { faceInfoField, registerLeave, offsetCard } from "./data.js"
 import axiosIns from "@/libs/axios";
+import { ref, nextTick } from '@vue/composition-api'
 export default {
     components: {
         BSidebar, ValidationObserver, BCard, BRow, BCol, BTable, BAvatar, BPagination
@@ -129,61 +131,46 @@ export default {
         },
         items: {
             type: Object
-        }
+        },
     },
     mounted() {
-        console.log('mounted');
-        console.log(this.items)
         this.getHrBoxDoorRecord();
         this.getHrTimeRecorder();
+        
     },
     created() { },
     updated: () => {
-        console.log('updated', this?.items);
     },
     methods: {
         async getHrBoxDoorRecord() {
             try {
-                const res = await axiosIns.get(`hrBoxDoorRecord?personNO=${this.items.personNo}`);
-                this.hrBoxDoorRecords = res.data.records;
-                console.log('getHrBoxDoorRecord', res.data.records);
+                const res = await axiosIns.get(`hrBoxDoorRecord/detail?date=${this.items.trackingDate}&personNo=${this.items.personNo}&shiftId=${this.items.shiftId}`);
+                this.hrBoxDoorRecords = res.data;
             } catch (error) {
                 console.log(error);
             }
         },
-        async  getHrTimeRecorder() {
+        async getHrTimeRecorder() {
             try {
-               const res =  await axiosIns.get(`hrTimeRecorder/byPerson?date=${this.items.trackingDate}&personNo=${this.items.personNo}`);
-               this.hrTimeRecorder = res.data.records
+                const res = await axiosIns.get(`hrTimeRecorder/byPerson?date=${this.items.trackingDate}&personNo=${this.items.personNo}`);
+                this.hrTimeRecorder = res.data
             } catch (error) {
                 console.log(error);
             }
         },
-
+        hidden() {
+            console.log("hiddenEvent")
+        },
         close() {
             this.$emit('sendValue', false);
             this.isTaskHandlerSidebarActive = false
         },
-        open () {
+        open() {
             this.isTaskHandlerSidebarActive = true
         },
     },
-    // directives:{
-    //     'click-outside': {
-    //         bind: function(el, binding, vNode) {
-    //             el.onclick = function(e) {
-    //                 var modal = document.getElementsByClassName("modal");
-    //                 el.addEventListener('click', function (event) {
-    //                     if (!modal[0].contains(event.target)) {          
-    //                        this.isTaskHandlerSidebarActive = false
-    //                     } 
-    //                 })            
-    //            }
-    //         } 
-    //     }
-    // },
     destroyed: () => {
-        console.log('destroyed', this?.items);
+        // console.log('destroyed', this?.items);
     }
 };
 </script>
@@ -191,6 +178,7 @@ export default {
 .b-table-sticky-header {
     max-height: 600px;
 }
+
 table.b-table[aria-busy=false] {
     width: 100%s !important;
 }

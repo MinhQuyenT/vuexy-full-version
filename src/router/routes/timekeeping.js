@@ -14,4 +14,9 @@ export default [
     name: 'data-synchronization',
     component: () => import('@/views/timekeeping/data-synchronization/DataSynchronization.vue'),
   },
+  {
+    path: '/timekeeping/data-search',
+    name: 'data-search',
+    component: () => import('@/views/timekeeping/data-search/DataSearch.vue'),
+  },
 ]

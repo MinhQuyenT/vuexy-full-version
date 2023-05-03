@@ -17,6 +17,7 @@ export class FunctionUtility {
    */
   getDateFormat(date)
   {
+    debugger
     return (
       date.getFullYear() +
       "/" +
@@ -52,8 +53,8 @@ export class FunctionUtility {
   }
 
   /**
-   * Append property HttpParams
-   * * @param formValue
+   * Append property URLSearchParams
+   * * @param URLSearchParams
    */
   ToParams(formValue)
   {
@@ -61,9 +62,24 @@ export class FunctionUtility {
     for (const name of Object.keys(formValue))
     {
       const value = formValue[name];
-      if (value != null || value != undefined)
-        params = params.append(key, value);
+      if (value !== null || value !== undefined)
+      {
+         params.append(name, value);
+      }
     }
     return params;
+  }
+
+  configParam(parameter) {
+    let param = { ...parameter };
+    Object.keys(param).forEach((key) => {
+      let checkParam = !!param[key]
+      if (!checkParam) {
+        delete param[key];
+      } else if (!param[key]) {
+        param[key] = `${param[key]}`
+      }
+    })
+    return param;
   }
 }

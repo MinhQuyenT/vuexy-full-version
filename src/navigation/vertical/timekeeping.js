@@ -8,6 +8,11 @@ export default [
     icon: 'CheckSquareIcon',
   },
   {
+    title: 'Tra cứu dữ liệu chấm công',
+    route: 'data-search',
+    icon: 'SearchIcon',
+  },
+  {
     title: 'Chấm công tháng',
     route: 'timekeeping-month',
     icon: 'EditIcon',
