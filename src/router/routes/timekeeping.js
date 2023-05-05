@@ -4,13 +4,13 @@ export default [
     name: 'timekeeping-day',
     component: () => import('@/views/timekeeping/timekeeping-day/TimekeepingDay.vue'),
     meta: {
-      pageTitle: 'TimeKeeping',
+      pageTitle: 'Chấm Công Ngày',
       breadcrumb: [
         {
-          text: 'Dashboard',
+          text: 'Chấm Công',
         },
         {
-          text: 'Timekeeping Day',
+          text: 'Chấm Công Ngày',
           active: true,
         },
       ],
@@ -31,13 +31,13 @@ export default [
     name: 'data-search',
     component: () => import('@/views/timekeeping/data-search/DataSearch.vue'),
     meta: {
-      pageTitle: 'TimeKeeping',
+      pageTitle: 'Tra Cứu Dữ Liệu',
       breadcrumb: [
         {
-          text: 'Dashboard',
+          text: 'Chấm Công',
         },
         {
-          text: 'Data Search',
+          text: 'Tra Cứu Dữ Liệu',
           active: true,
         },
       ],

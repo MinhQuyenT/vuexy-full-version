@@ -148,7 +148,6 @@
         </b-col>
         <!-- Pagination -->
         <b-col cols="12" sm="6" class="d-flex align-items-center justify-content-center justify-content-sm-end">
-
           <b-pagination v-model="currentPage" :total-rows="totalInvoices" :per-page="perPage" first-number last-number
             class="mb-0 mt-1 mt-sm-0" prev-class="prev-item" next-class="next-item">
             <template #prev-text>
@@ -158,7 +157,6 @@
               <feather-icon icon="ChevronRightIcon" size="18" />
             </template>
           </b-pagination>
-
         </b-col>
 
       </b-row>

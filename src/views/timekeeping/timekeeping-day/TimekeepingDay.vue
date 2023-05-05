@@ -1,15 +1,20 @@
 <template>
-  <div class="" style="height: 770px">
-    <div class="grid-content" style="padding-top: 0; padding-left: 2px; margin-top: -20px;">
+  <div class="timekeeping-main">
+    <div class="grid-content" style="padding-top: 0; padding-left: 2px;margin-top:-15px; margin-bottom: 10px;">
       <b-button variant="relief-info" class="mr-1" @click="getHrTrackingData" :disabled="isBusy">Tra Cứu</b-button>
-      <b-button variant="relief-warning" class="mr-1">Tính Toán</b-button>
-      <b-button variant="relief-success" class="mr-1" @click="report">Xuất File</b-button>
+      <b-button variant="relief-warning" class="mr-1" hidden>Tính Toán</b-button>
+      <!-- <b-button variant="relief-success" class="mr-1" @click="report">Xuất File</b-button> -->
+      <b-dropdown text="Xuất File" variant="relief-success">
+        <b-dropdown-item value="vi" @click="report('vi')">Tiếng Việt</b-dropdown-item>
+        <b-dropdown-item value="cn" @click="report('cn')">Tiếng Trung</b-dropdown-item>
+        <b-dropdown-item value="en" @click="report('en')">Tiếng Anh</b-dropdown-item>
+      </b-dropdown>
     </div>
     <!-- <div class="d-flex justify-content-center mb-1">
       <b-spinner v-if="spinner" label="Loading..." />
     </div> -->
-    <b-card class="text-center border " style="padding: 0!important;">
-      <div class="custom-search mb-2">
+    <b-card class="text-center border " style="padding: 0!important; padding-bottom:0; height:calc(100vh - 155px); ">
+      <div class="custom-search " style="margin-bottom:2px">
         <!-- advance search input -->
         <b-row>
           <b-col md="2">
@@ -22,29 +27,37 @@
           </b-col>
           <b-col md="2">
             <b-form-group>
-                <h6 style="display: flex; font-size: 0.857rem">Bộ phận:</h6>
-                <v-select v-model="param.department" placeholder="-- Bộ phận --" :options="systemDeps" option-text="text"
-                  option-value="value" label="text"></v-select>
-              </b-form-group>
+              <h6 style="display: flex; font-size: 0.857rem">Bộ phận:</h6>
+              <v-select v-model="param.department" placeholder="-- Bộ phận --" :options="systemDeps" option-text="text"
+                option-value="value" label="text"></v-select>
+            </b-form-group>
           </b-col>
           <b-col md="2">
             <b-form-group>
               <label style="float: left">Mã nhân viên:</label>
-              <b-form-input v-model="param.personNO" placeholder="Mã nhân vien" type="text" class="d-inline-block"
-                @input="advanceSearch" />
+              <b-form-input id="personNO" v-model="param.personNO" autocomplete="off" placeholder="Mã nhân vien" type="text"
+                class="d-inline-block personNO"
+                @input="advanceSearch && showIConX('.personNO', '.imgPersonNO', 'activePersonNO')" />
+              <div class="imgPersonNO">
+                <feather-icon icon="XIcon" />
+              </div>
             </b-form-group>
           </b-col>
           <b-col md="2">
             <b-form-group>
               <label style="float: left">Họ tên:</label>
-              <b-form-input v-model="param.personName" placeholder="Họ tên" type="text" class="d-inline-block"
-                @input="advanceSearch" />
+              <b-form-input v-model="param.personName" id="personName" placeholder="Họ tên" autocomplete="off" type="text"
+                class="d-inline-block personName"
+                @input="advanceSearch && showIConX('.personName', '.imgPersonName', 'activePersonName')" />
+              <div class="imgPersonName">
+                <feather-icon icon="XIcon" />
+              </div>
             </b-form-group>
           </b-col>
           <b-col md="2">
             <b-form-group>
               <h6 style="display: flex; font-size: 0.857rem">Quốc tịch:</h6>
-              <v-select v-model="param.politics" placeholder="-- Quốc tịch --" :options="systemCodes" option-text="text"
+              <v-select v-model="param.politics" placeholder="-- Quốc tịch --" :clearable="false" :options="systemCodes" option-text="text"
                 option-value="value" label="text"></v-select>
             </b-form-group>
           </b-col>
@@ -67,7 +80,8 @@
           </b-col>
           <b-col md="2">
             <b-form-group>
-              <label style="float: left">Ngày kết thúc<span>(<strong class="text-danger text-bold">*</strong>)</span>:</label>
+              <label style="float: left">Ngày kết thúc <span>(<strong
+                    class="text-danger text-bold">*</strong>)</span>:</label>
               <b-form-datepicker id="dateEnd" :date-format-options="{ year: 'numeric', month: 'numeric', day: 'numeric' }"
                 label-no-date-selected="Ngày kết thúc" v-model="param.dateEnd" prop="" class="mb-2"></b-form-datepicker>
             </b-form-group>
@@ -96,13 +110,38 @@
         </b-row>
       </div>
       <b-overlay id="overlay-background" :show="isBusy" :variant="variant" :opacity="opacity" :blur="blur" rounded="sm"
-        style="height: 548px">
-        <b-table style="height: 548px" @row-dblclicked="onRowBblClicked"
+        style="">
+        <b-table style="height: calc(100vh - 400px)" @row-dblclicked="onRowBblClicked"
           table-style="width: 100% !important; text-align: left" :sticky-header="true" aria-busy="true"
           :select-mode="selectMode" selectable responsive table-class=" text-nowrap" :fields="tableColumns"
           :items="hrTrackingData" primary-key="id" :sort-by.sync="sortBy" show-empty empty-text="Không có dữ liệu"
           :sort-desc.sync="isSortDirDesc" class="d-block table-cus" ref="refInvoiceListTable">
         </b-table>
+        <div class="mx-2 mb-0">
+        <div class="d-flex align-items-center justify-content-end ">
+          <div class="d-flex align-items-center mr-2">
+            <span class="text-muted">Tổng:</span> {{ this.totalRow }}
+          </div>
+          <div class="d-flex align-items-center mr-2">
+            <label> <span class="text-muted">Hiển thị</span></label>
+            <v-select v-model="perPage" :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'" append-to-body
+              :calculate-position="withPopper" :options="perPageOptions" :clearable="false"
+              class="per-page-selector d-inline-block ml-50 mr-1" />
+          </div>
+
+          <div class="d-flex align-items-center">
+            <b-pagination v-model="currentPage" :total-rows="totalRow" :per-page="perPage" first-number last-number
+              class="mb-0 mt-sm-0" prev-class="prev-item" next-class="next-item">
+              <template #prev-text>
+                <feather-icon icon="ChevronLeftIcon" size="18" />
+              </template>
+              <template #next-text>
+                <feather-icon icon="ChevronRightIcon" size="18" />
+              </template>
+            </b-pagination>
+          </div>
+        </div>
+      </div>
       </b-overlay>
     </b-card>
     <!-- Sidebar -->
@@ -111,15 +150,16 @@
 </template>
 
 <script>
-import {  BOverlay, BSpinner, BCol, BTable, BRow, BButton, VBToggle, BCard, BFormSelect, BFormInput, BFormGroup, BFormDatepicker } from "bootstrap-vue";
+import { BOverlay, BDropdown, BDropdownItem, BSpinner, BPagination, BCol, BTable, BRow, BButton, VBToggle, BCard, BFormSelect, BFormInput, BFormGroup, BFormDatepicker } from "bootstrap-vue";
 import vSelect from "vue-select";
 import SibarDetail from "./SibarDetail.vue";
-import { tableColumn } from "./data.js"
+import { tableColumn, ResetX, showIConX } from "./data.js"
 import axiosIns from "@/libs/axios";
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
+import { createPopper } from '@popperjs/core'
 
 export default {
-  components: { BOverlay, BSpinner, BCol, BTable, BRow, BButton, VBToggle, BCard, BFormSelect, BFormInput, BFormGroup, BFormDatepicker, vSelect, SibarDetail },
+  components: { BOverlay, BDropdown, BDropdownItem, BSpinner, BCol, BTable, BRow, BPagination, BButton, VBToggle, BCard, BFormSelect, BFormInput, BFormGroup, BFormDatepicker, vSelect, SibarDetail },
   data() {
     return {
       stickyHeader: true,
@@ -129,6 +169,7 @@ export default {
         systemCode: null,
         systemDepartment: null,
         orgNO: null,
+        politics: {value:1, text:'Việt nam'},
       },
       noCollapse: false,
       modes: ["multi", "single", "range"],
@@ -153,113 +194,81 @@ export default {
       variant: 'light',
       opacity: 0.85,
       blur: '2px',
+      perPageOptions: [10, 20, 25, 50, 100],
+      perPage: 20,
+      currentPage: 1,
+      totalRow: 0,
+      placement: 'top'
     };
   },
   mounted() {
     this.getSystemOrg();
-    this.getHrTrackingData();
-    this.getSystemDep();
     this.getSystemCodePositics();
+    this.setParam();
+    this.getSystemDep();
     this.getSystemCodeShift();
     this.getSystemCodeBool();
     this.getSystemCodeStatus();
+    this.getHrTrackingData();
   },
-  created: {},
+  created() {},
+  watch: {
+    perPage: function (currentPage, oldCurrentPage) {
+      this.getHrTrackingData();
+    },
+
+    currentPage: function (currentPage, oldCurrentPage) {
+      this.getHrTrackingData();
+    },
+  },
   methods: {
     getHrTrackingData() {
-      let obj = {
-        dateBegin: new Date(this.param.dateBegin).toLocaleDateString("fr-CA"),
-        dateEnd: new Date(this.param.dateEnd).toLocaleDateString("fr-CA"),
-      }
-      if (this.param.orgId) {
-        obj = Object.assign(obj, { orgId: this.param.orgId.organizeId })
-      }
-      if (this.param.department) {
-        obj = Object.assign(obj, { department: this.param.department })
-      }
-      if (this.param.politics) {
-        obj = Object.assign(obj, { politics: this.param.politics.value })
-      }
-      if (this.param.shiftId) {
-        obj = Object.assign(obj, { shiftId: this.param.shiftId.value })
-      }
-      if (this.param.offset) {
-        obj = Object.assign(obj, { offset: this.param.offset.value })
-      }
-      if (this.param.personNO) {
-        obj = Object.assign(obj, { personNo: this.param.personNO })
-      }
-      if (this.param.personName) {
-        obj = Object.assign(obj, { personName: this.param.personName })
-      }
       this.isBusy = true
-      axiosIns.get('hrTrackingData', { params: obj }).then((res) => {
-        if (res.code == -1) {
+      axiosIns.get('hrTrackingData', { params: this.setParam() }).then((res) => {
+        if (res.data.code == -1) {
           this.$toast.error({
             component: ToastificationContent,
             position: 'top-right',
             props: {
               variant: 'warning',
-              text: `Vui lòng nhập ngày tháng!`,
+              icon: 'CheckCircleIcon',
+              text: `${res.data.msg}`,
             },
           })
         } else {
+          this.$toast({
+            component: ToastificationContent,
+            position: 'top-right',
+            props: {
+              variant: 'success',
+              icon: 'CheckCircleIcon',
+              text: `${res.data.msg}`,
+            },
+          })
           this.isBusy = false;
-          this.hrTrackingData = res.data.data;
-          console.log(res.data.data);
-          if (this.hrTrackingData != null) {
+          if (res.data.data != null) {
+            this.hrTrackingData = res.data?.data.records;
+            this.totalRow = res.data.data.total;
+            this.currentPage = res.data.data.current;
             this.hrTrackingData.map((item, index) => {
               item.index = index + 1;
               item.trackingDate = new Date(item.trackingDate).toLocaleDateString("fr-CA");
               item.offset = item.offset == 1 ? this.systemCodeBool.filter(v => v.value == 1)[0].text : this.systemCodeBool.filter(v => v.value == 0)[0].text;
               item.status = item.status == true ? this.systemCodeStatus.filter(v => v.value == 1)[0].text : this.systemCodeStatus.filter(v => v.value == 0)[0].text;
             })
+          } else {
+            this.hrTrackingData = [];
+            this.totalRow = 0;
+            this.currentPage = 1;
+
           }
         }
-      }).catch(err => {
-        if (err) {
-          console.log(err);
-          this.$toast.error({
-            component: ToastificationContent,
-            position: 'top-right',
-            props: {
-              title: ``,
-              icon: 'ConnectIcon',
-              variant: 'warning',
-              text: `Vui lòng nhập ngày tháng!`,
-            },
-          })
-        }
-      })
+      }).catch(err => { })
     },
 
-    report() {
-      let obj = {
-        dateBegin: new Date(this.param.dateBegin).toLocaleDateString("fr-CA"),
-        dateEnd: new Date(this.param.dateEnd).toLocaleDateString("fr-CA"),
-      }
-      if (this.param.orgId) {
-        obj = Object.assign(obj, { orgId: this.param.orgId.organizeId })
-      }
-      if (this.param.department) {
-        obj = Object.assign(obj, { department: this.param.department })
-      }
-      if (this.param.politics) {
-        obj = Object.assign(obj, { politics: this.param.politics.value })
-      }
-      if (this.param.shiftId) {
-        obj = Object.assign(obj, { shiftId: this.param.shiftId.value })
-      }
-      if (this.param.offset) {
-        obj = Object.assign(obj, { offset: this.param.offset.value })
-      }
-      if (this.param.personNO) {
-        obj = Object.assign(obj, { personNo: this.param.personNO })
-      }
-      if (this.param.personName) {
-        obj = Object.assign(obj, { personName: this.param.personName })
-      }
-      var params = new URLSearchParams(obj).toString();
+    report(value) {
+      
+      var params = new URLSearchParams(this.setParam()).toString();
       var url = `http://192.168.5.42:99/api/hrTrackingData/download${params ? '?' + params : ''}`;
       window.open(url, 'Download');
     },
@@ -284,13 +293,13 @@ export default {
 
     getSystemDep() {
       axiosIns.get('systemDepartment/dep').then(res => {
-        this.systemDeps = res.data.map((item) => { return { value: item.orgNO, text: item.orgName } })
+        this.systemDeps = res.data.map((item) => { return { value: item.parentOID, text: item.orgName } })
       }).catch()
     },
 
     getSystemDepByOrg(item) {
       axiosIns.get(`/systemDepartment?parentOID=${item.organizeId}`).then(res => {
-        this.systemDeps = res.data.map((item) => { return { value: item.orgNO, text: item.orgName } })
+        this.systemDeps = res.data.map((item) => { return { value: item.parentOID, text: item.orgName } })
       }).catch()
     },
 
@@ -323,12 +332,67 @@ export default {
       }
     },
 
-    onRowSelected(items) {
-      // this.isTaskHandlerSidebarActive = true;
-      // if(this.isTaskHandlerSidebarActive == true){
-      //   this.itemRow = items[0]
-      // }
+    setParam(){
+      let obj = {
+        dateBegin: new Date(this.param.dateBegin).toLocaleDateString("fr-CA"),
+        dateEnd: new Date(this.param.dateEnd).toLocaleDateString("fr-CA"),
+      }
+      if (this.param.orgId) {
+        obj = Object.assign(obj, { orgId: this.param.orgId.organizeId })
+      }
+      if (this.param.department) {
+        obj = Object.assign(obj, { department: this.param.department.value })
+      }
+      if (this.param.politics) {
+        obj = Object.assign(obj, { politics: this.param.politics.value })
+      }
+      if (this.param.shiftId) {
+        obj = Object.assign(obj, { shiftId: this.param.shiftId.value })
+      }
+      if (this.param.offset) {
+        obj = Object.assign(obj, { offset: this.param.offset.value })
+      }
+      if (this.param.personNO) {
+        obj = Object.assign(obj, { personNo: this.param.personNO })
+      }
+      if (this.param.status) {
+        obj = Object.assign(obj, { status: this.param.status.value })
+      }
+      if (this.param.personName) {
+        obj = Object.assign(obj, { personName: this.param.personName })
+      }
+      if (this.currentPage) {
+        obj = Object.assign(obj, { page: +this.currentPage })
+      }
+      if (this.perPage) {
+        obj = Object.assign(obj, { rows: this.perPage })
+      }
+
+      return obj
     },
+
+    showIConX(Selector, imgSelector, active) {
+      const item = document.querySelector(Selector).value;
+      const img = document.querySelector(imgSelector)
+      if (item.value <= 0) {
+        document.body.classList.remove(active)
+      } else {
+        document.body.classList.add(active)
+      }
+      img.addEventListener("click", () => {
+        debugger
+        document.querySelector(Selector).value = "";
+        if(Selector == ".personNO"){
+          this.param.personNO = ""
+        }
+        if(Selector == ".personName"){
+          this.param.personName = ""
+        }
+        document.body.classList.remove(active)
+      })
+    },
+
+    onRowSelected(items) { },
     advanceSearch(val) {
       this.searchTerm = val;
     },
@@ -336,9 +400,39 @@ export default {
       if (!this.param.orgId) {
         this.getSystemDep();
       }
-    }
-  }
-};
+    },
+    withPopper(dropdownList, component, { width }) {
+      dropdownList.style.width = width
+      const popper = createPopper(component.$refs.toggle, dropdownList, {
+        placement: this.placement,
+        modifiers: [
+          {
+            name: 'offset',
+            options: {
+              offset: [0, -1],
+            },
+          },
+          {
+            name: 'toggleClass',
+            enabled: true,
+            phase: 'write',
+            fn({ state }) {
+              component.$el.classList.toggle(
+                'drop-up',
+                state.placement === 'top'
+              )
+            },
+          },
+        ],
+      })
+      return () => popper.destroy()
+    },
+  },
+  directives: {
+    ResetX
+  },
+}
+
 </script>
 
 <style lang="scss">
@@ -375,4 +469,52 @@ table#table-transition-example .flip-list-move {
 table#table-transition-example .flip-list-move {
   transition: transform 1s;
 }
+
+.timekeeping-main {
+  height: auto;
+  max-height: 100%;
+}
+
+body {
+  min-height: 100%;
+}
+
+[data-popper-placement='top'] {
+  border-radius: 4px 4px 0 0;
+  border-top-style: solid;
+  border-bottom-style: none;
+  box-shadow: 0 -3px 6px rgba(0, 0, 0, 0.15);
+}
+
+.imgPersonNO {
+  display: none;
+}
+
+.imgPersonName {
+  display: none;
+}
+
+.activePersonNO .imgPersonNO {
+  position: absolute;
+  margin-top: -30px;
+  margin-left: 230px;
+  display: block;
+  right: 20px;
+  color: #6e6b7b;
+}
+
+.activePersonName .imgPersonName {
+  right: 26px;
+  position: absolute;
+  margin-top: -30px;
+  display: block;
+  right: 20px;
+  color: #6e6b7b;
+}
+@media screen and (max-width: 1405px) {
+  .table-cus{
+    height: calc(100vh - 460px)!important
+  }
+}
+
 </style>

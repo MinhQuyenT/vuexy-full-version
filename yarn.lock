@@ -1135,6 +1135,11 @@
     consola "^2.15.0"
     node-fetch "^2.6.7"
 
+"@popperjs/core@^2.11.7":
+  version "2.11.7"
+  resolved "https://registry.npmjs.org/@popperjs/core/-/core-2.11.7.tgz"
+  integrity sha512-Cr4OjIkipTtcXKjAsm8agyleBuDHvxzeBoa1v543lbv1YaIwQjESsVcmjiWiPEbC1FIeHOG/Op9kdCmAmiS3Kw==
+
 "@smallwei/avue@^2.10.11":
   version "2.10.11"
   resolved "https://registry.npmjs.org/@smallwei/avue/-/avue-2.10.11.tgz"
