@@ -47,10 +47,9 @@
             <b-form-group>
               <label style="float: left">Họ tên:</label>
               <b-form-input v-model="param.personName" id="personName" placeholder="Họ tên" autocomplete="off" type="text"
-                class="d-inline-block personName"
-                @input="advanceSearch && showIConX('.personName', '.imgPersonName', 'activePersonName')" />
-              <div class="imgPersonName">
-                <feather-icon icon="XIcon" />
+                class="d-inline-block personName"/>
+              <div style="position:absolute;top:30px;right:22px" v-if="param.personName!=null&param.personName!=''">
+                <feather-icon icon="XIcon" @click="clear('personName')"/>
               </div>
             </b-form-group>
           </b-col>
@@ -113,7 +112,7 @@
         style="">
         <b-table style="height: calc(100vh - 400px)" @row-dblclicked="onRowBblClicked"
           table-style="width: 100% !important; text-align: left" :sticky-header="true" aria-busy="true"
-          :select-mode="selectMode" selectable responsive table-class=" text-nowrap" :fields="tableColumns"
+          select-mode="single" selectable responsive table-class=" text-nowrap" :fields="tableColumns"
           :items="hrTrackingData" primary-key="id" :sort-by.sync="sortBy" show-empty empty-text="Không có dữ liệu"
           :sort-desc.sync="isSortDirDesc" class="d-block table-cus" ref="refInvoiceListTable">
         </b-table>
@@ -128,17 +127,22 @@
               :calculate-position="withPopper" :options="perPageOptions" :clearable="false"
               class="per-page-selector d-inline-block ml-50 mr-1" />
           </div>
+          <div >
+            <b-pagination
+              v-model="currentPage"
+              :total-rows="totalRow"
+              :per-page="perPage"
+            ></b-pagination>
+<!--            <b-pagination v-model="currentPage" :total-rows="totalRow" :per-page="perPage" first-number last-number-->
+<!--              class="mb-0 mt-sm-0" prev-class="prev-item" next-class="next-item">-->
 
-          <div class="d-flex align-items-center">
-            <b-pagination v-model="currentPage" :total-rows="totalRow" :per-page="perPage" first-number last-number
-              class="mb-0 mt-sm-0" prev-class="prev-item" next-class="next-item">
-              <template #prev-text>
-                <feather-icon icon="ChevronLeftIcon" size="18" />
-              </template>
-              <template #next-text>
-                <feather-icon icon="ChevronRightIcon" size="18" />
-              </template>
-            </b-pagination>
+<!--              <template #prev-text>-->
+<!--                <feather-icon icon="ChevronLeftIcon" size="18" />-->
+<!--              </template>-->
+<!--              <template #next-text>-->
+<!--                <feather-icon icon="ChevronRightIcon" size="18" />-->
+<!--              </template>-->
+<!--            </b-pagination>-->
           </div>
         </div>
       </div>
@@ -162,7 +166,7 @@ export default {
   components: { BOverlay, BDropdown, BDropdownItem, BSpinner, BCol, BTable, BRow, BPagination, BButton, VBToggle, BCard, BFormSelect, BFormInput, BFormGroup, BFormDatepicker, vSelect, SibarDetail },
   data() {
     return {
-      stickyHeader: true,
+
       param: {
         dateBegin: new Date().toISOString(),
         dateEnd: new Date().toISOString(),
@@ -171,9 +175,6 @@ export default {
         orgNO: null,
         politics: {value:1, text:'Việt nam'},
       },
-      noCollapse: false,
-      modes: ["multi", "single", "range"],
-      selectMode: "single",
       selected: [],
       itemRow: {},
       systemCodes: [],
@@ -222,6 +223,9 @@ export default {
     },
   },
   methods: {
+    clear(val){
+      this.param[val]=null;
+    },
     getHrTrackingData() {
       this.isBusy = true
       axiosIns.get('hrTrackingData', { params: this.setParam() }).then((res) => {
@@ -267,7 +271,7 @@ export default {
     },
 
     report(value) {
-      
+
       var params = new URLSearchParams(this.setParam()).toString();
       var url = `http://192.168.5.42:99/api/hrTrackingData/download${params ? '?' + params : ''}`;
       window.open(url, 'Download');
@@ -331,7 +335,6 @@ export default {
         this.itemRow = items
       }
     },
-
     setParam(){
       let obj = {
         dateBegin: new Date(this.param.dateBegin).toLocaleDateString("fr-CA"),
@@ -367,7 +370,6 @@ export default {
       if (this.perPage) {
         obj = Object.assign(obj, { rows: this.perPage })
       }
-
       return obj
     },
 
@@ -432,14 +434,11 @@ export default {
     ResetX
   },
 }
-
 </script>
-
 <style lang="scss">
 .el-input__inner:focus {
   border: 1px solid #7367f0 !important;
 }
-
 .b-sidebar.sidebar-lg {
   width: 70% !important;
 }
@@ -447,53 +446,42 @@ export default {
 // table.b-table[aria-busy="false"] {
 //   width: max-content !important;
 // }
-
 .table.b-table>tbody>.table-active,
 .table.b-table>tbody>.table-active>th,
 .table.b-table>tbody>.table-active>td {
   background-color: #bdf !important;
 }
-
 table#table-transition-example .flip-list-move {
   transition: transform 1s;
 }
-
 .form-group {
   margin-bottom: 0;
 }
-
 .b-table-sticky-header {
   max-height: 700px;
 }
-
 table#table-transition-example .flip-list-move {
   transition: transform 1s;
 }
-
 .timekeeping-main {
   height: auto;
   max-height: 100%;
 }
-
 body {
   min-height: 100%;
 }
-
 [data-popper-placement='top'] {
   border-radius: 4px 4px 0 0;
   border-top-style: solid;
   border-bottom-style: none;
   box-shadow: 0 -3px 6px rgba(0, 0, 0, 0.15);
 }
-
 .imgPersonNO {
   display: none;
 }
-
 .imgPersonName {
   display: none;
 }
-
 .activePersonNO .imgPersonNO {
   position: absolute;
   margin-top: -30px;
@@ -502,7 +490,6 @@ body {
   right: 20px;
   color: #6e6b7b;
 }
-
 .activePersonName .imgPersonName {
   right: 26px;
   position: absolute;
