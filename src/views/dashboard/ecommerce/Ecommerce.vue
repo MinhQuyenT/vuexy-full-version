@@ -116,6 +116,7 @@ export default {
       furloughDetails.title = 'Nghỉ phép'
       furloughDetails.sum = 0
       orgDetails.series[0].data = []
+      orgDetails.chartOptions.xaxis.categories=[];
       orgDetail.map(e => {
         orgDetails.series[0].data.push(e.offsetNum || 0)
         orgDetails.series[1].data.push(e.furloughNum || 0)
