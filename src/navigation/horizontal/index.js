@@ -1,37 +1,37 @@
-/*
 
-NOTE: tag is not supported in horizontal menu
 
-Array of object
+// NOTE: tag is not supported in horizontal menu
 
-Top level object can be:
-2. Group (Group can have navItems as children)
-3. navItem
+// Array of object
 
-* Supported Options
+// Top level object can be:
+// 2. Group (Group can have navItems as children)
+// 3. navItem
 
-/--- nav Grp (top level grp is called header group) ---/
+// * Supported Options
 
-title
-icon (if it's on top/second level)
-children
+// /--- nav Grp (top level grp is called header group) ---/
 
-/--- nav Item (top level item is called header link) ---/
+// title
+// icon (if it's on top/second level)
+// children
 
-icon (if it's on top/second level)
-title
-route: [route_obj/route_name] (I have to resolve name somehow from the route obj)
+// /--- nav Item (top level item is called header link) ---/
 
-*/
-import manager from './manager'
+// icon (if it's on top/second level)
+// title
+// route: [route_obj/route_name] (I have to resolve name somehow from the route obj)
+
+
 import dashboard from './dashboard'
+import manage from './manage'
 import timekeeping from './timekeeping'
-// import apps from './apps'
-// import pages from './pages'
-// import chartsAndMaps from './charts-and-maps'
-// import uiElements from './ui-elements'
-// import formAndTable from './forms-and-table'
-// import others from './others'
+import system from './system'
 
 // Array of sections
-export default [...dashboard, ...timekeeping, ...manager]
+export default [
+    ...dashboard,
+    ...timekeeping, 
+    ...system,
+    ...manage
+]

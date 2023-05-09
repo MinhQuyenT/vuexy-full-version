@@ -1,6 +1,6 @@
 export default [
     {
-        header: 'Quản lý',
+        header: 'manage',
     },
     {
         title: 'Danh sách ca làm',

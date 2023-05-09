@@ -31,8 +31,14 @@ tagVariant
 
 */
 import dashboard from './dashboard'
-import manager from './manager'
+import manage from './manage'
 import timekeeping from './timekeeping'
+import system from './system'
 
 // Array of sections
-export default [...dashboard, ...timekeeping, ...manager ]
+export default [
+    ...dashboard,
+    ...timekeeping, 
+    ...system,
+    ...manage
+]

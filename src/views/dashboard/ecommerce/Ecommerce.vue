@@ -2,35 +2,19 @@
   <section id="dashboard-ecommerce">
     <b-row class="match-height">
       <b-col>
-        <ecommerce-statistics
-          :data="data.statisticsItems"
-          :years="years"
-          :months="months"
-          @changeDate="change"
-        />
+        <ecommerce-statistics :data="data.statisticsItems" :years="years" :months="months" @changeDate="change" />
       </b-col>
     </b-row>
     <b-row class="match-height">
       <b-col lg="4">
         <b-row class="match-height">
-          <b-col
-            lg="6"
-            md="3"
-            cols="6"
-          >
+          <b-col lg="6" md="3" cols="6">
             <ecommerce-profit-chart :data="data.offsetDetails" />
           </b-col>
-          <b-col
-            lg="6"
-            md="3"
-            cols="6"
-          >
+          <b-col lg="6" md="3" cols="6">
             <ecommerce-profit-chart :data="data.furloughDetails" />
           </b-col>
-          <b-col
-            lg="12"
-            md="6"
-          >
+          <b-col lg="12" md="6">
             <ecommerce-earnings-chart :data="data.earningsCharts" />
           </b-col>
         </b-row>
@@ -116,7 +100,7 @@ export default {
       furloughDetails.title = 'Nghỉ phép'
       furloughDetails.sum = 0
       orgDetails.series[0].data = []
-      orgDetails.chartOptions.xaxis.categories=[];
+      orgDetails.chartOptions.xaxis.categories = [];
       orgDetail.map(e => {
         orgDetails.series[0].data.push(e.offsetNum || 0)
         orgDetails.series[1].data.push(e.furloughNum || 0)

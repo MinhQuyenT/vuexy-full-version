@@ -59,7 +59,7 @@ export default {
   methods: {
     loginRoute() {
       const user = JSON.parse(localStorage.getItem('userData'))
-      return getHomeRouteForLoggedInUser(user ? user.perm[0] : null)
+      return getHomeRouteForLoggedInUser(user ? user.role[0] : null)
     },
   },
 }

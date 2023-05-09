@@ -194,11 +194,10 @@ export default {
       this.$refs.loginForm.validate().then(success => {
         if (success) {
           useJwt.login({
-            password: this.password, username: this.userEmail,
+            password: this.password, username: this.username,
           })
             .then(response => {
-              
-              if (response.code == -1) {
+              if (response.data.code == -1) {
                 this.$toast({
                   component: ToastificationContent,
                   position: 'top-right',
@@ -212,11 +211,11 @@ export default {
               } else {
                 const obj = {
                   id: 1,
-                  fullName: "Admin",
-                  username: "Admin",
-                  avatar: response.data.img,
+                  fullName: response.data.data.userInfo,
+                  username: this.username,
+                  avatar: response.data.data.img,
                   email: "Test@123.com",
-                  role: "admin",
+                  role: response.data.data.perm,
                   ability: [
                     {
                       action: "manage",
@@ -248,13 +247,12 @@ export default {
                         title: `Xin chào ${obj.fullName || obj.username}`,
                         icon: 'CoffeeIcon',
                         variant: 'success',
-                        text: `Bạn đã đăng nhập thành công với tài khoản ${obj.role}. Bây giờ bạn có thể sử dụng!`,
+                        text: `Bạn đã đăng nhập thành công với tài khoản ${obj.username}. Bây giờ bạn có thể sử dụng!`,
                       },
                     })
                   })
               }
             }).catch(error => {
-              debugger
               this.$toast.error({
                 component: ToastificationContent,
                 position: 'top-right',

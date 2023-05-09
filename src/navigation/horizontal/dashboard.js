@@ -10,7 +10,7 @@ export default [
       // },
       {
         title: 'Trang Chủ',
-        route: 'dashboard-ecommerce',
+        route: 'dashboard',
         icon: 'ActivityIcon',
       },
     ],

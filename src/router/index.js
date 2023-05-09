@@ -12,7 +12,9 @@ import chartsMaps from './routes/charts-maps'
 import formsTable from './routes/forms-tables'
 import others from './routes/others'
 import timekeeping from './routes/timekeeping'
-import manager from './routes/manager'
+import manage from './routes/manage'
+import system from './routes/system'
+import navMenuItems from '@/navigation/vertical'
 
 Vue.use(VueRouter)
 
@@ -23,16 +25,12 @@ const router = new VueRouter({
     return { x: 0, y: 0 }
   },
   routes: [
-    { path: '/', redirect: { name: 'dashboard-ecommerce' } },
+    { path: '/', redirect: { name: 'dashboard' } },
     ...timekeeping,
-    ...manager,
-    ...apps,
+    ...system,
+    ...manage,
     ...dashboard,
     ...pages,
-    ...chartsMaps,
-    ...formsTable,
-    ...uiElements,
-    ...others,
     {
       path: '*',
       redirect: 'error-404',
@@ -42,10 +40,20 @@ const router = new VueRouter({
 
 router.beforeEach((to, _, next) => {
   const isLoggedIn = isUserLoggedIn()
+  const userRoles = JSON.parse(localStorage.getItem('userData'))?.role;
+  const excludePages = pages.map(x => x.path);
+  let isValidRoute = true;
 
-  if (!canNavigate(to)) {
+  if (!excludePages.includes(to.path) && userRoles[0] !== "*:*:*") {
+    const path = to.path === '/dashboard' ? `/dashboard/dashboard` : to.path;
+    const userPaths = userRoles?.map(x => '/' + x.split(':').slice(0, 2).join('/'));
+    isValidRoute = userPaths?.includes(path);
+  }
+  
+  if (!canNavigate(to) || !isValidRoute) {
     // Redirect to login if not logged in
-    if (!isLoggedIn) return next({ name: 'auth-login' })
+    if (!isLoggedIn) 
+      return next({ name: 'auth-login' })
 
     // If logged in => not authorized
     return next({ name: 'misc-not-authorized' })

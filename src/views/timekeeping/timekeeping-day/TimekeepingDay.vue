@@ -13,6 +13,7 @@
     <!-- <div class="d-flex justify-content-center mb-1">
       <b-spinner v-if="spinner" label="Loading..." />
     </div> -->
+    <!-- <form-input :options="option1" :params="param"></form-input> -->
     <b-card class="text-center border " style="padding: 0!important; padding-bottom:0; height:calc(100vh - 155px); ">
       <div class="custom-search " style="margin-bottom:2px">
         <!-- advance search input -->
@@ -35,8 +36,8 @@
           <b-col md="2">
             <b-form-group>
               <label style="float: left">Mã nhân viên:</label>
-              <b-form-input id="personNO" v-model="param.personNO" autocomplete="off" placeholder="Mã nhân vien" type="text"
-                class="d-inline-block personNO"
+              <b-form-input id="personNO" v-model="param.personNO" autocomplete="off" placeholder="Mã nhân vien"
+                type="text" class="d-inline-block personNO"
                 @input="advanceSearch && showIConX('.personNO', '.imgPersonNO', 'activePersonNO')" />
               <div class="imgPersonNO">
                 <feather-icon icon="XIcon" />
@@ -47,17 +48,17 @@
             <b-form-group>
               <label style="float: left">Họ tên:</label>
               <b-form-input v-model="param.personName" id="personName" placeholder="Họ tên" autocomplete="off" type="text"
-                class="d-inline-block personName"/>
-              <div style="position:absolute;top:30px;right:22px" v-if="param.personName!=null&param.personName!=''">
-                <feather-icon icon="XIcon" @click="clear('personName')"/>
+                class="d-inline-block personName" />
+              <div style="position:absolute;top:30px;right:22px" v-if="param.personName != null & param.personName != ''">
+                <feather-icon icon="XIcon" @click="clear('personName')" />
               </div>
             </b-form-group>
           </b-col>
           <b-col md="2">
             <b-form-group>
               <h6 style="display: flex; font-size: 0.857rem">Quốc tịch:</h6>
-              <v-select v-model="param.politics" placeholder="-- Quốc tịch --" :clearable="false" :options="systemCodes" option-text="text"
-                option-value="value" label="text"></v-select>
+              <v-select v-model="param.politics" placeholder="-- Quốc tịch --" :clearable="false" :options="systemCodes"
+                option-text="text" option-value="value" label="text"></v-select>
             </b-form-group>
           </b-col>
           <b-col md="2">
@@ -117,35 +118,31 @@
           :sort-desc.sync="isSortDirDesc" class="d-block table-cus" ref="refInvoiceListTable">
         </b-table>
         <div class="mx-2 mb-0">
-        <div class="d-flex align-items-center justify-content-end ">
-          <div class="d-flex align-items-center mr-2">
-            <span class="text-muted">Tổng:</span> {{ this.totalRow }}
-          </div>
-          <div class="d-flex align-items-center mr-2">
-            <label> <span class="text-muted">Hiển thị</span></label>
-            <v-select v-model="perPage" :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'" append-to-body
-              :calculate-position="withPopper" :options="perPageOptions" :clearable="false"
-              class="per-page-selector d-inline-block ml-50 mr-1" />
-          </div>
-          <div >
-            <b-pagination
-              v-model="currentPage"
-              :total-rows="totalRow"
-              :per-page="perPage"
-            ></b-pagination>
-<!--            <b-pagination v-model="currentPage" :total-rows="totalRow" :per-page="perPage" first-number last-number-->
-<!--              class="mb-0 mt-sm-0" prev-class="prev-item" next-class="next-item">-->
+          <div class="d-flex align-items-center justify-content-end ">
+            <div class="d-flex align-items-center mr-2">
+              <span class="text-muted">Tổng:</span> {{ this.totalRow }}
+            </div>
+            <div class="d-flex align-items-center mr-2">
+              <label> <span class="text-muted">Hiển thị</span></label>
+              <v-select v-model="perPage" :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'" append-to-body
+                :calculate-position="withPopper" :options="perPageOptions" :clearable="false"
+                class="per-page-selector d-inline-block ml-50 mr-1" />
+            </div>
+            <div>
+              <b-pagination v-model="currentPage" :total-rows="totalRow" :per-page="perPage"></b-pagination>
+              <!--            <b-pagination v-model="currentPage" :total-rows="totalRow" :per-page="perPage" first-number last-number-->
+              <!--              class="mb-0 mt-sm-0" prev-class="prev-item" next-class="next-item">-->
 
-<!--              <template #prev-text>-->
-<!--                <feather-icon icon="ChevronLeftIcon" size="18" />-->
-<!--              </template>-->
-<!--              <template #next-text>-->
-<!--                <feather-icon icon="ChevronRightIcon" size="18" />-->
-<!--              </template>-->
-<!--            </b-pagination>-->
+              <!--              <template #prev-text>-->
+              <!--                <feather-icon icon="ChevronLeftIcon" size="18" />-->
+              <!--              </template>-->
+              <!--              <template #next-text>-->
+              <!--                <feather-icon icon="ChevronRightIcon" size="18" />-->
+              <!--              </template>-->
+              <!--            </b-pagination>-->
+            </div>
           </div>
         </div>
-      </div>
       </b-overlay>
     </b-card>
     <!-- Sidebar -->
@@ -154,8 +151,7 @@
 </template>
 
 <script>
-import { BOverlay, BDropdown, BDropdownItem, BSpinner, BPagination, BCol, BTable, BRow, BButton, VBToggle, BCard, BFormSelect, BFormInput, BFormGroup, BFormDatepicker } from "bootstrap-vue";
-import vSelect from "vue-select";
+
 import SibarDetail from "./SibarDetail.vue";
 import { tableColumn, ResetX, showIConX } from "./data.js"
 import axiosIns from "@/libs/axios";
@@ -163,21 +159,22 @@ import ToastificationContent from '@core/components/toastification/Toastificatio
 import { createPopper } from '@popperjs/core'
 
 export default {
-  components: { BOverlay, BDropdown, BDropdownItem, BSpinner, BCol, BTable, BRow, BPagination, BButton, VBToggle, BCard, BFormSelect, BFormInput, BFormGroup, BFormDatepicker, vSelect, SibarDetail },
+  components: { SibarDetail },
   data() {
     return {
-
+      systemCodes: [],
+      option1: [],
       param: {
         dateBegin: new Date().toISOString(),
         dateEnd: new Date().toISOString(),
         systemCode: null,
         systemDepartment: null,
         orgNO: null,
-        politics: {value:1, text:'Việt nam'},
+        politics: { value: 1, text: 'Việt nam' },
       },
       selected: [],
       itemRow: {},
-      systemCodes: [],
+
       systemDeps: [],
       hrTrackingData: [],
       systemOrgs: [],
@@ -211,8 +208,20 @@ export default {
     this.getSystemCodeBool();
     this.getSystemCodeStatus();
     this.getHrTrackingData();
+    this.option1 = [{
+        type: "text",
+        title: "Mã Nhân Viên",
+        prop: "personNO"
+      },
+      {
+        type: "select",
+        title: "Quốc Tịch",
+        prop: "politics",
+        optionData: this.systemCodes,
+        clearable:false
+      }]
   },
-  created() {},
+  created() { },
   watch: {
     perPage: function (currentPage, oldCurrentPage) {
       this.getHrTrackingData();
@@ -223,8 +232,8 @@ export default {
     },
   },
   methods: {
-    clear(val){
-      this.param[val]=null;
+    clear(val) {
+      this.param[val] = null;
     },
     getHrTrackingData() {
       this.isBusy = true
@@ -335,7 +344,7 @@ export default {
         this.itemRow = items
       }
     },
-    setParam(){
+    setParam() {
       let obj = {
         dateBegin: new Date(this.param.dateBegin).toLocaleDateString("fr-CA"),
         dateEnd: new Date(this.param.dateEnd).toLocaleDateString("fr-CA"),
@@ -384,10 +393,10 @@ export default {
       img.addEventListener("click", () => {
         debugger
         document.querySelector(Selector).value = "";
-        if(Selector == ".personNO"){
+        if (Selector == ".personNO") {
           this.param.personNO = ""
         }
-        if(Selector == ".personName"){
+        if (Selector == ".personName") {
           this.param.personName = ""
         }
         document.body.classList.remove(active)
@@ -439,6 +448,7 @@ export default {
 .el-input__inner:focus {
   border: 1px solid #7367f0 !important;
 }
+
 .b-sidebar.sidebar-lg {
   width: 70% !important;
 }
@@ -451,37 +461,47 @@ export default {
 .table.b-table>tbody>.table-active>td {
   background-color: #bdf !important;
 }
+
 table#table-transition-example .flip-list-move {
   transition: transform 1s;
 }
+
 .form-group {
   margin-bottom: 0;
 }
+
 .b-table-sticky-header {
   max-height: 700px;
 }
+
 table#table-transition-example .flip-list-move {
   transition: transform 1s;
 }
+
 .timekeeping-main {
   height: auto;
   max-height: 100%;
 }
+
 body {
   min-height: 100%;
 }
+
 [data-popper-placement='top'] {
   border-radius: 4px 4px 0 0;
   border-top-style: solid;
   border-bottom-style: none;
   box-shadow: 0 -3px 6px rgba(0, 0, 0, 0.15);
 }
+
 .imgPersonNO {
   display: none;
 }
+
 .imgPersonName {
   display: none;
 }
+
 .activePersonNO .imgPersonNO {
   position: absolute;
   margin-top: -30px;
@@ -490,6 +510,7 @@ body {
   right: 20px;
   color: #6e6b7b;
 }
+
 .activePersonName .imgPersonName {
   right: 26px;
   position: absolute;
@@ -498,10 +519,10 @@ body {
   right: 20px;
   color: #6e6b7b;
 }
+
 @media screen and (max-width: 1405px) {
-  .table-cus{
-    height: calc(100vh - 460px)!important
+  .table-cus {
+    height: calc(100vh - 460px) !important
   }
 }
-
 </style>

@@ -1,6 +1,6 @@
 export default [
   {
-    header: 'Chấm Công',
+    header: 'keeping',
   },
   {
     title: 'Chấm công ngày',
@@ -19,7 +19,7 @@ export default [
   },
   {
     title: 'Đồng bộ dữ liệu IT',
-    route: 'apps-todo',
+    route: 'data-synchronization-it',
     icon: 'CloudDrizzleIcon',
   },
   {
@@ -29,30 +29,7 @@ export default [
   },
   {
     title: 'Sửa mã số thẻ',
-    route: 'forms-element-input-group',
+    route: 'modify-card-number',
     icon: 'CalendarIcon',
-  },
-  {
-    header: 'Hệ thống',
-  },
-  {
-    title: 'Danh sách tài khoản',
-    route: 'table-bs-table',
-    icon: 'CalendarIcon',
-  },
-  {
-    title: 'Quyền hạn tài khoản',
-    route: 'apps-e-commerce-wishlist',
-    icon: 'UserCheckIcon',
-  },
-  {
-    title: 'Cấu hình',
-    route: 'forms-element-input-group',
-    icon: 'SettingsIcon',
-  },
-  {
-    title: 'Thông tin server',
-    route: 'apps-users-view',
-    icon: 'ServerIcon',
   },
 ]
