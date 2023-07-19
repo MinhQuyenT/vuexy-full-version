@@ -37,7 +37,7 @@ import EcommerceStatistics from './EcommerceStatistics.vue'
 import EcommerceRevenueReport from './EcommerceRevenueReport.vue'
 import EcommerceProfitChart from './EcommerceProfitChart.vue'
 import EcommerceEarningsChart from './EcommerceEarningsChart.vue'
-
+import { useUtils as useI18nUtils } from '@core/libs/i18n'
 export default {
   components: {
     BRow,
@@ -49,12 +49,14 @@ export default {
   },
   data() {
     return {
+      t:null,
       data: {},
       years: ['2022', '2023'],
       months: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
     }
   },
   async created() {
+    this.t = useI18nUtils()
     const d = new Date();
     this.initData(d.getFullYear(), d.getMonth())
     // this.$http.get('/ecommerce/data').then(response => { console.log(response.data)})

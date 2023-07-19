@@ -4,13 +4,13 @@ export default [
     name: 'timekeeping-day',
     component: () => import('@/views/timekeeping/timekeeping-day/TimekeepingDay.vue'),
     meta: {
-      pageTitle: 'Chấm Công Ngày',
+      pageTitle: 'timekeepingDay',
       breadcrumb: [
         {
-          text: 'Chấm Công',
+          text: 'keeping',
         },
         {
-          text: 'Chấm Công Ngày',
+          text: 'timekeepingDay',
           active: true,
         },
       ],
@@ -21,13 +21,13 @@ export default [
     name: 'timekeeping-month',
     component: () => import('@/views/timekeeping/timekeeping-month/TimekeepingMonth.vue'),
     meta: {
-      pageTitle: 'Chấm Công Theo Tháng',
+      pageTitle: 'timekeepingMonth',
       breadcrumb: [
         {
-          text: 'Chấm Công',
+          text: 'keeping',
         },
         {
-          text: 'Chấm Công Theo Tháng',
+          text: 'timekeepingMonth',
           active: true,
         },
       ],
@@ -38,13 +38,13 @@ export default [
     name: 'data-synchronization',
     component: () => import('@/views/timekeeping/data-synchronization/DataSynchronization.vue'),
     meta: {
-      pageTitle: 'Đồng Bộ Dữ Liệu',
+      pageTitle: 'dataSynchronization',
       breadcrumb: [
         {
-          text: 'Chấm Công',
+          text: 'keeping',
         },
         {
-          text: 'Đồng Bộ Dữ Liệu',
+          text: 'dataSynchronization',
           active: true,
         },
       ],
@@ -55,13 +55,13 @@ export default [
     name: 'data-search',
     component: () => import('@/views/timekeeping/data-search/DataSearch.vue'),
     meta: {
-      pageTitle: 'Tra Cứu Dữ Liệu',
+      pageTitle: 'timekeepingDataSearch',
       breadcrumb: [
         {
-          text: 'Chấm Công',
+          text: 'keeping',
         },
         {
-          text: 'Tra Cứu Dữ Liệu',
+          text: 'timekeepingDataSearch',
           active: true,
         },
       ],
@@ -72,13 +72,13 @@ export default [
     name: 'modify-card-number',
     component: () => import('@/views/timekeeping/modify-card-number/ModifyCardNumber.vue'),
     meta: {
-      pageTitle: 'Sửa Đổi Mã Thẻ',
+      pageTitle: 'modifyCard',
       breadcrumb: [
         {
-          text: 'Chấm Công',
+          text: 'keeping',
         },
         {
-          text: 'Sửa Đổi Mã Thẻ',
+          text: 'modifyCard',
           active: true,
         },
       ],
@@ -89,13 +89,13 @@ export default [
     name: 'data-synchronization-it',
     component: () => import('@/views/timekeeping/data-synchronization-it/DataSynchronizationIt.vue'),
     meta: {
-      pageTitle: 'Đồng Bộ Dữ Liệu IT',
+      pageTitle: 'dataSynchronizationIt',
       breadcrumb: [
         {
-          text: 'Chấm Công',
+          text: 'keeping',
         },
         {
-          text: 'Đồng Bộ Dữ Liệu IT',
+          text: 'dataSynchronizationIt',
           active: true,
         },
       ],

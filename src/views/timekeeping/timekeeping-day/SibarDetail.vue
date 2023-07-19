@@ -9,7 +9,7 @@
                 <template #default="{ hide }">
                     <!-- Header -->
                     <div class="d-flex justify-content-between  content-sidebar-header px-2 py-1">
-                        <h5 class="mb-0">THÔNG TIN CHI TIẾT</h5>
+                        <h5 class="mb-0">{{ $t('timekeeping-day.detailInfo') }}</h5>
                         <div>
                             <feather-icon class="ml-1 cursor-pointer" icon="XIcon" size="16" @click="hide" />
                         </div>
@@ -25,18 +25,18 @@
                                     <div class=" ml-1">
                                         <div class="d-flex flex-wrap mb-1">
                                             <h5 class="mb-0">
-                                                <strong>Họ tên: </strong>{{ items.personName }}
+                                                <strong>{{ $t('timekeeping-day.personName') }}: </strong>{{ items.personName }}
                                             </h5>
                                         </div>
                                         <div class="d-flex flex-wrap mb-1">
                                             <span class="card-text">
-                                                <strong>Ngày sinh: </strong> {{ items.birthday != null ?
+                                                <strong>{{ $t('timekeeping-day.birthDay') }}: </strong> {{ items.birthday != null ?
                                                     items.birthday.substring(0, 10) : items.birthday }}
                                             </span>
                                         </div>
                                         <div class="d-flex flex-wrap">
                                             <span class="card-text mb-1">
-                                                <strong>Bộ phận:</strong> {{ items.orgName }}
+                                                <strong>{{ $t('timekeeping-day.department') }}:</strong> {{ items.orgName }}
                                             </span>
                                         </div>
                                     </div>
@@ -48,7 +48,7 @@
                                     <tr>
                                         <th class="pb-50">
                                             <feather-icon icon="UserIcon" class="mr-45" />
-                                            <span class="font-weight-bold">Ca Làm</span>
+                                            <span class="font-weight-bold">{{ $t('timekeeping-day.shift') }}</span>
                                         </th>
                                         <td class="pb-50">
                                             {{ items.shiftName }}
@@ -57,7 +57,7 @@
                                     <tr>
                                         <th class="pb-50">
                                             <feather-icon icon="CheckIcon" class="mr-45" />
-                                            <span class="font-weight-bold">Thời Gian Làm Việc</span>
+                                            <span class="font-weight-bold">{{ $t('timekeeping-day.workTime') }}</span>
                                         </th>
                                         <td class="pb-50 text-capitalize">
                                             {{ items.workTime }}
@@ -66,7 +66,7 @@
                                     <tr>
                                         <th class="pb-50">
                                             <feather-icon icon="StarIcon" class="mr-45" />
-                                            <span class="font-weight-bold">Thời Gian Nghỉ Trưa</span>
+                                            <span class="font-weight-bold">{{ $t('timekeeping-day.breakTime') }}</span>
                                         </th>
                                         <td class="pb-50 text-capitalize">
                                             {{ items.breakTime }}
@@ -78,22 +78,22 @@
                     </b-card>
                     <b-row>
                         <b-col cols="12" lg="8" md="8" xs="12">
-                            <b-card title="CHI TIẾT QUẸT GƯƠNG MẶT" class="hrBoxDoorRecords"
+                            <b-card :title="$t('timekeeping-day.faceScanDetail.faceScanDetail')" class="hrBoxDoorRecords"
                                 style="height: calc(100vh - 240px)">
                                 <b-table style=" width: 100%!important" :no-border-collapse="true" aria-busy="true"
-                                    :sticky-header="true" show-empty empty-text="Không có dữ liệu" 
+                                    :sticky-header="true" show-empty :empty-text="$t('timekeeping-day.noData')" 
                                     table-style="width: max-content!important" striped responsive :fields="faceInfoField"
-                                    :items="hrBoxDoorRecords" class="mb-0 text-nowrap">
+                                    :items="hrBoxDoorRecords" class="mb-0 text-nowrap table-bordered">
                                 </b-table>
                             </b-card>
                         </b-col>
                         <b-col cols="12" lg="4" md="4" xs="12">
                             <b-row>
                                 <b-col cols="12">
-                                    <b-card title="DỮ LIỆU BÙ THẺ" style=" height: calc(50vh - 139px)">
+                                    <b-card :title="$t('timekeeping-day.offsetTime')" style=" height: calc(50vh - 139px)">
                                         <b-table striped responsive style=" width: 100%!important "
                                             table-style="width: max-content!important" :sticky-header="true" show-empty
-                                            empty-text="Không có dữ liệu" :no-border-collapse="true" aria-busy="true"
+                                            :empty-text="$t('timekeeping-day.noData')" :no-border-collapse="true" aria-busy="true"
                                             :fields="offsetCard" :items="hrTimeRecorder" class="mb-0">
                                         </b-table>
                                     </b-card>
@@ -101,10 +101,10 @@
                             </b-row>
                             <b-row>
                                 <b-col cols="12">
-                                    <b-card title="LỊCH SỬ NGHỈ PHÉP" style=" height:  calc(50vh - 130px)">
+                                    <b-card :title="$t('timekeeping-day.leaveHistory')" style=" height:  calc(50vh - 130px)">
                                         <b-table striped responsive style=" width: 100%!important" :fields="registerLeave"
                                             class="mb-0" show-empty table-style="width: max-content!important"
-                                            :no-border-collapse="true" empty-text="Không có dữ liệu">
+                                            :no-border-collapse="true" :empty-text="$t('timekeeping-day.noData')">
                                         </b-table>
                                     </b-card>
                                 </b-col>

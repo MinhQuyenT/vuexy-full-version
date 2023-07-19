@@ -1,13 +1,14 @@
 <template>
   <div class="timekeeping-main">
     <div class="grid-content" style="padding-top: 0; padding-left: 2px;margin-top:-15px; margin-bottom: 10px;">
-      <b-button variant="relief-info" class="mr-1" @click="getHrTrackingData" :disabled="isBusy">Tra Cứu</b-button>
+      <b-button variant="relief-info" class="mr-1" @click="getHrTrackingData" :disabled="isBusy">{{
+        $t('timekeeping-day.search') }}</b-button>
       <b-button variant="relief-warning" class="mr-1" hidden>Tính Toán</b-button>
       <!-- <b-button variant="relief-success" class="mr-1" @click="report">Xuất File</b-button> -->
-      <b-dropdown text="Xuất File" variant="relief-success">
-        <b-dropdown-item value="vi" @click="report('vi')">Tiếng Việt</b-dropdown-item>
-        <b-dropdown-item value="cn" @click="report('cn')">Tiếng Trung</b-dropdown-item>
-        <b-dropdown-item value="en" @click="report('en')">Tiếng Anh</b-dropdown-item>
+      <b-dropdown :text="$t('timekeeping-day.exportExcel')" variant="relief-success">
+        <b-dropdown-item value="vi" @click="report('vi')">{{ $t('timekeeping-day.vietnam') }}</b-dropdown-item>
+        <b-dropdown-item value="cn" @click="report('cn')">{{ $t('timekeeping-day.china') }}</b-dropdown-item>
+        <b-dropdown-item value="en" @click="report('en')">{{ $t('timekeeping-day.english') }}</b-dropdown-item>
       </b-dropdown>
     </div>
     <!-- <div class="d-flex justify-content-center mb-1">
@@ -20,35 +21,35 @@
         <b-row>
           <b-col md="2">
             <b-form-group>
-              <h6 style="display: flex; font-size: 0.857rem">Trung tâm:</h6>
-              <v-select v-model="param.orgId" placeholder="-- Trung tâm --" @close="onDeselectingOrg"
+              <h6 style="display: flex; font-size: 0.857rem">{{ $t('timekeeping-day.orgName') }}:</h6>
+              <v-select v-model="param.orgId" :placeholder="$t('timekeeping-day.orgName')" @close="onDeselectingOrg"
                 @option:selected="onChangeOrg" :options="systemOrgs" option-text="text" option-value="organizeId"
                 label="text"></v-select>
             </b-form-group>
           </b-col>
           <b-col md="2">
             <b-form-group>
-              <h6 style="display: flex; font-size: 0.857rem">Bộ phận:</h6>
-              <v-select v-model="param.department" placeholder="-- Bộ phận --" :options="systemDeps" option-text="text"
-                option-value="value" label="text"></v-select>
+              <h6 style="display: flex; font-size: 0.857rem">{{ $t('timekeeping-day.department') }}:</h6>
+              <v-select v-model="param.department" :placeholder="$t('timekeeping-day.department')" :options="systemDeps"
+                option-text="text" option-value="value" label="text"></v-select>
             </b-form-group>
           </b-col>
           <b-col md="2">
             <b-form-group>
-              <label style="float: left">Mã nhân viên:</label>
-              <b-form-input id="personNO" v-model="param.personNO" autocomplete="off" placeholder="Mã nhân vien"
-                type="text" class="d-inline-block personNO"
-                @input="advanceSearch && showIConX('.personNO', '.imgPersonNO', 'activePersonNO')" />
-              <div class="imgPersonNO">
-                <feather-icon icon="XIcon" />
+              <label style="float: left">{{ $t('timekeeping-day.personNO') }}:</label>
+              <b-form-input id="personNO" v-model="param.personNO" autocomplete="off"
+                :placeholder="$t('timekeeping-day.personNO')" type="text" class="d-inline-block personNO"
+                @input="advanceSearch" />
+              <div style="position:absolute;top:30px;right:22px" v-if="param.personNO != null & param.personNO != ''">
+                <feather-icon icon="XIcon" @click="clear('personNO')" />
               </div>
             </b-form-group>
           </b-col>
           <b-col md="2">
             <b-form-group>
-              <label style="float: left">Họ tên:</label>
-              <b-form-input v-model="param.personName" id="personName" placeholder="Họ tên" autocomplete="off" type="text"
-                class="d-inline-block personName" />
+              <label style="float: left">{{ $t('timekeeping-day.personName') }}:</label>
+              <b-form-input v-model="param.personName" id="personName" :placeholder="$t('timekeeping-day.personName')"
+                autocomplete="off" type="text" class="d-inline-block personName" />
               <div style="position:absolute;top:30px;right:22px" v-if="param.personName != null & param.personName != ''">
                 <feather-icon icon="XIcon" @click="clear('personName')" />
               </div>
@@ -56,23 +57,24 @@
           </b-col>
           <b-col md="2">
             <b-form-group>
-              <h6 style="display: flex; font-size: 0.857rem">Quốc tịch:</h6>
-              <v-select v-model="param.politics" placeholder="-- Quốc tịch --" :clearable="false" :options="systemCodes"
-                option-text="text" option-value="value" label="text"></v-select>
+              <h6 style="display: flex; font-size: 0.857rem">{{ $t('timekeeping-day.politics') }}:</h6>
+              <v-select v-model="param.politics" :placeholder="$t('timekeeping-day.politics')" :clearable="false"
+                :options="systemCodesPositics" option-text="text" option-value="value" label="text"></v-select>
             </b-form-group>
           </b-col>
           <b-col md="2">
             <b-form-group>
-              <h6 style="display: flex; font-size: 0.857rem">Ca làm:</h6>
-              <v-select v-model="param.shiftId" placeholder="-- Ca làm --" :options="systemCodeShift" option-text="text"
-                option-value="value" label="text"></v-select>
+              <h6 style="display: flex; font-size: 0.857rem">{{ $t('timekeeping-day.shift') }}:</h6>
+              <v-select v-model="param.shiftId" :placeholder="$t('timekeeping-day.shift')" :options="systemCodeShift"
+                option-text="text" option-value="value" label="text"></v-select>
             </b-form-group>
           </b-col>
         </b-row>
         <b-row class="mt-1">
           <b-col md="2">
             <b-form-group>
-              <label style="float: left">Ngày bắt đầu <span>(<strong class="text-danger">*</strong>)</span>:</label>
+              <label style="float: left">{{ $t('timekeeping-day.dateBegin') }} <span>(<strong
+                    class="text-danger">*</strong>)</span>:</label>
               <b-form-datepicker id="dateBegin" :input-date="'YYYY-MM-DD'"
                 :date-format-options="{ year: 'numeric', month: 'numeric', day: 'numeric' }"
                 label-no-date-selected="Ngày bắt đầu" v-model="param.dateBegin" prop="" class="mb-2"></b-form-datepicker>
@@ -80,7 +82,7 @@
           </b-col>
           <b-col md="2">
             <b-form-group>
-              <label style="float: left">Ngày kết thúc <span>(<strong
+              <label style="float: left">{{ $t('timekeeping-day.dateEnd') }} <span>(<strong
                     class="text-danger text-bold">*</strong>)</span>:</label>
               <b-form-datepicker id="dateEnd" :date-format-options="{ year: 'numeric', month: 'numeric', day: 'numeric' }"
                 label-no-date-selected="Ngày kết thúc" v-model="param.dateEnd" prop="" class="mb-2"></b-form-datepicker>
@@ -88,22 +90,22 @@
           </b-col>
           <b-col md="2">
             <b-form-group>
-              <h6 style="display: flex; font-size: 0.857rem">Trạng thái:</h6>
-              <v-select v-model="param.status" placeholder="--Trạng thái--" :options="systemCodeStatus" option-text="text"
-                option-value="value" label="text"></v-select>
+              <h6 style="display: flex; font-size: 0.857rem">{{ $t('timekeeping-day.status') }}:</h6>
+              <v-select v-model="param.status" :placeholder="$t('timekeeping-day.status')" :options="systemCodeStatus"
+                option-text="text" option-value="value" label="text"></v-select>
             </b-form-group>
           </b-col>
           <b-col md="2">
             <b-form-group>
-              <h6 style="display: flex; font-size: 0.857rem">Bù thẻ:</h6>
-              <v-select v-model="param.offset" placeholder="-- Bù thẻ --" :options="systemCodeBool" option-text="text"
-                option-value="value" label="text"></v-select>
+              <h6 style="display: flex; font-size: 0.857rem">{{ $t('timekeeping-day.offset') }}:</h6>
+              <v-select v-model="param.offset" :placeholder="$t('timekeeping-day.offset')" :options="systemCodeBool"
+                option-text="text" option-value="value" label="text"></v-select>
             </b-form-group>
           </b-col>
           <b-col md="2">
             <b-form-group>
-              <h6 style="display: flex; font-size: 0.857rem">Nghỉ phép:</h6>
-              <v-select v-model="param.furlough" placeholder="-- Nghỉ phép --" :options="systemCodeBool"
+              <h6 style="display: flex; font-size: 0.857rem">{{ $t('timekeeping-day.furlough') }}:</h6>
+              <v-select v-model="param.furlough" :placeholder="$t('timekeeping-day.furlough')" :options="systemCodeBool"
                 option-text="text" option-value="value" label="text"></v-select>
             </b-form-group>
           </b-col>
@@ -114,32 +116,28 @@
         <b-table style="height: calc(100vh - 400px)" @row-dblclicked="onRowBblClicked"
           table-style="width: 100% !important; text-align: left" :sticky-header="true" aria-busy="true"
           select-mode="single" selectable responsive table-class=" text-nowrap" :fields="tableColumns"
-          :items="hrTrackingData" primary-key="id" :sort-by.sync="sortBy" show-empty empty-text="Không có dữ liệu"
-          :sort-desc.sync="isSortDirDesc" class="d-block table-cus" ref="refInvoiceListTable">
+          :items="hrTrackingData" primary-key="id" :sort-by.sync="sortBy" show-empty :empty-text="$t('timekeeping-day.noData')"
+          :sort-desc.sync="isSortDirDesc" class="d-block table-cus table-bordered" ref="refInvoiceListTable">
+
+          <template #cell(statusName)="data">
+            <b-badge pill :variant="`light-${data.item.status == false ? 'danger' : 'success'}`" class="text-capitalize">
+              {{ data.item.statusName }}
+            </b-badge>
+          </template>
         </b-table>
         <div class="mx-2 mb-0">
           <div class="d-flex align-items-center justify-content-end ">
             <div class="d-flex align-items-center mr-2">
-              <span class="text-muted">Tổng:</span> {{ this.totalRow }}
+              <span class="text-muted">{{ $t('timekeeping-day.sum') }}:</span> {{ this.totalRow }}
             </div>
             <div class="d-flex align-items-center mr-2">
-              <label> <span class="text-muted">Hiển thị</span></label>
+              <label> <span class="text-muted">{{ $t('timekeeping-day.show') }}</span></label>
               <v-select v-model="perPage" :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'" append-to-body
                 :calculate-position="withPopper" :options="perPageOptions" :clearable="false"
                 class="per-page-selector d-inline-block ml-50 mr-1" />
             </div>
             <div>
               <b-pagination v-model="currentPage" :total-rows="totalRow" :per-page="perPage"></b-pagination>
-              <!--            <b-pagination v-model="currentPage" :total-rows="totalRow" :per-page="perPage" first-number last-number-->
-              <!--              class="mb-0 mt-sm-0" prev-class="prev-item" next-class="next-item">-->
-
-              <!--              <template #prev-text>-->
-              <!--                <feather-icon icon="ChevronLeftIcon" size="18" />-->
-              <!--              </template>-->
-              <!--              <template #next-text>-->
-              <!--                <feather-icon icon="ChevronRightIcon" size="18" />-->
-              <!--              </template>-->
-              <!--            </b-pagination>-->
             </div>
           </div>
         </div>
@@ -153,7 +151,7 @@
 <script>
 
 import SibarDetail from "./SibarDetail.vue";
-import { tableColumn, ResetX, showIConX } from "./data.js"
+import { tableColumn, } from "./data.js"
 import axiosIns from "@/libs/axios";
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
 import { createPopper } from '@popperjs/core'
@@ -162,7 +160,7 @@ export default {
   components: { SibarDetail },
   data() {
     return {
-      systemCodes: [],
+      systemCodesPositics: [],
       option1: [],
       param: {
         dateBegin: new Date().toISOString(),
@@ -170,18 +168,18 @@ export default {
         systemCode: null,
         systemDepartment: null,
         orgNO: null,
-        politics: { value: 1, text: 'Việt nam' },
+        politics: { value: 2, text: 'Việt nam' },
       },
       selected: [],
       itemRow: {},
-
+      systemCode: [],
       systemDeps: [],
       hrTrackingData: [],
+      hrTrackingDataTest: [],
       systemOrgs: [],
       systemCodeBool: [],
       systemCodeStatus: [],
       systemCodeShift: [],
-      backdrop: false,
       tableColumns: tableColumn(this),
       sortBy: null,
       sortDesc: null,
@@ -196,32 +194,38 @@ export default {
       perPage: 20,
       currentPage: 1,
       totalRow: 0,
-      placement: 'top'
+      placement: 'top',
     };
   },
-  mounted() {
+  async mounted() {
+    await this.getSystemCode();
+    this.systemCodeLanguage();
     this.getSystemOrg();
-    this.getSystemCodePositics();
     this.setParam();
     this.getSystemDep();
-    this.getSystemCodeShift();
-    this.getSystemCodeBool();
-    this.getSystemCodeStatus();
     this.getHrTrackingData();
-    this.option1 = [{
-        type: "text",
-        title: "Mã Nhân Viên",
-        prop: "personNO"
-      },
-      {
-        type: "select",
-        title: "Quốc Tịch",
-        prop: "politics",
-        optionData: this.systemCodes,
-        clearable:false
-      }]
+    this.hrTrackingData.map((item, index) => {
+      item.index = index + 1;
+      item.trackingDate = new Date(item.trackingDate).toLocaleDateString("fr-CA");
+      item.dayOfWeekName = this.configSystemCode("dayOfWeek", item.dayOfWeek);
+      item.offsetName = this.configSystemCode("bool", item.offset);
+      item.statusName = this.configSystemCode("status", item.status);
+      item.shiftName = this.configSystemCode("workShift", item.shiftId);
+    })
+
   },
-  created() { },
+  beforeUpdate() {
+    this.systemCodeLanguage();
+    this.hrTrackingData.map((item, index) => {
+      item.index = index + 1;
+      item.trackingDate = new Date(item.trackingDate).toLocaleDateString("fr-CA");
+      item.dayOfWeekName = this.configSystemCode("dayOfWeek", item.dayOfWeek);
+      item.offsetName = this.configSystemCode("bool", item.offset);
+      item.statusName = this.configSystemCode("status", item.status);
+      item.shiftName = this.configSystemCode("workShift", item.shiftId);
+    })
+    this.tableColumns = tableColumn(this);
+  },
   watch: {
     perPage: function (currentPage, oldCurrentPage) {
       this.getHrTrackingData();
@@ -232,12 +236,33 @@ export default {
     },
   },
   methods: {
-    clear(val) {
-      this.param[val] = null;
+    async getSystemCode() {
+      await axiosIns.get('systemCode').then(res => {
+        this.systemCode = res.data.map((item) => {
+          return { codeValue: item.codeValue, codeNameVi: item.codeNameVi, codeNameEn: item.codeNameEn, codeNameCn: item.codeNameCn, codeKey: item.codeKey }
+        })
+      }).catch()
     },
+
+    systemCodeLanguage() {
+      this.systemCodeShift = this.systemCode.filter(item => item.codeKey === 'workShift').map(item => {
+        return { value: item.codeValue, text: this.$i18n.locale === 'en' ? item.codeNameVi : this.$i18n.locale === 'vi' ? item.codeNameVi : item.codeNameCn }
+      })
+      this.systemCodesPositics = this.systemCode.filter(item => item.codeKey === 'positics').map(item => {
+        return { value: item.codeValue, text: this.$i18n.locale === 'en' ? item.codeNameVi : this.$i18n.locale === 'vi' ? item.codeNameVi : item.codeNameCn }
+      })
+      this.systemCodeStatus = this.systemCode.filter(item => item.codeKey === 'status').map(item => {
+        return { value: item.codeValue, text: this.$i18n.locale === 'en' ? item.codeNameVi : this.$i18n.locale === 'vi' ? item.codeNameVi : item.codeNameCn }
+      })
+      this.systemCodeBool = this.systemCode.filter(item => item.codeKey === 'bool').map(item => {
+        return { value: item.codeValue, text: this.$i18n.locale === 'en' ? item.codeNameVi : this.$i18n.locale === 'vi' ? item.codeNameVi : item.codeNameCn }
+      })
+    },
+
     getHrTrackingData() {
       this.isBusy = true
       axiosIns.get('hrTrackingData', { params: this.setParam() }).then((res) => {
+        console.log('res: ', res);
         if (res.data.code == -1) {
           this.$toast.error({
             component: ToastificationContent,
@@ -261,41 +286,36 @@ export default {
           this.isBusy = false;
           if (res.data.data != null) {
             this.hrTrackingData = res.data?.data.records;
+            this.hrTrackingDataTest = res.data?.data.records;
             this.totalRow = res.data.data.total;
             this.currentPage = res.data.data.current;
-            this.hrTrackingData.map((item, index) => {
-              item.index = index + 1;
-              item.trackingDate = new Date(item.trackingDate).toLocaleDateString("fr-CA");
-              item.offset = item.offset == 1 ? this.systemCodeBool.filter(v => v.value == 1)[0].text : this.systemCodeBool.filter(v => v.value == 0)[0].text;
-              item.status = item.status == true ? this.systemCodeStatus.filter(v => v.value == 1)[0].text : this.systemCodeStatus.filter(v => v.value == 0)[0].text;
-            })
           } else {
             this.hrTrackingData = [];
             this.totalRow = 0;
             this.currentPage = 1;
-
           }
+
+          console.log(this.hrTrackingDataTest);
         }
       }).catch(err => { })
     },
 
-    report(value) {
+    configSystemCode(codeKey, codeValue) {
+      if (codeValue === true) {
+        codeValue = 1
+      } else if (codeValue === false) {
+        codeValue = 0
+      } else codeValue = codeValue
+      const name = this.systemCode.filter(item => item.codeKey === codeKey && item.codeValue === codeValue.toString()).map(item => {
+        return { name: this.$i18n.locale === 'en' ? item.codeNameVi : this.$i18n.locale === 'vi' ? item.codeNameVi : item.codeNameCn }
+      })
+      return name[0]?.name
+    },
 
+    report() {
       var params = new URLSearchParams(this.setParam()).toString();
       var url = `http://192.168.5.42:99/api/hrTrackingData/download${params ? '?' + params : ''}`;
       window.open(url, 'Download');
-    },
-
-    getSystemOrg() {
-      axiosIns.get('systemDepartment/org').then(res => {
-        this.systemOrgs = res.data.map((item) => { return { value: item.orgNO, text: item.orgName, organizeId: item.organizeId } })
-      }).catch()
-    },
-
-    getSystemCodeShift() {
-      axiosIns.get('systemCode?codeKey=workShift').then(res => {
-        this.systemCodeShift = res.data.map((item) => { return { value: item.codeValue, text: item.codeNameVi } })
-      }).catch()
     },
 
     getSystemOrg() {
@@ -313,24 +333,6 @@ export default {
     getSystemDepByOrg(item) {
       axiosIns.get(`/systemDepartment?parentOID=${item.organizeId}`).then(res => {
         this.systemDeps = res.data.map((item) => { return { value: item.parentOID, text: item.orgName } })
-      }).catch()
-    },
-
-    getSystemCodePositics() {
-      axiosIns.get(`/systemCode`).then(res => {
-        this.systemCodes = res.data.filter(item => item.codeKey === "positics").map((res) => { return { value: res.codeId, text: res.codeNameVi } })
-      }).catch()
-    },
-
-    getSystemCodeBool() {
-      axiosIns.get(`/systemCode`).then(res => {
-        this.systemCodeBool = res.data.filter(item => item.codeKey === "bool").map((res) => { return { value: res.codeValue, text: res.codeNameVi } })
-      }).catch()
-    },
-
-    getSystemCodeStatus() {
-      axiosIns.get(`/systemCode`).then(res => {
-        this.systemCodeStatus = res.data.filter(item => item.codeKey === "status").map((res) => { return { value: res.codeValue, text: res.codeNameVi } })
       }).catch()
     },
 
@@ -382,36 +384,20 @@ export default {
       return obj
     },
 
-    showIConX(Selector, imgSelector, active) {
-      const item = document.querySelector(Selector).value;
-      const img = document.querySelector(imgSelector)
-      if (item.value <= 0) {
-        document.body.classList.remove(active)
-      } else {
-        document.body.classList.add(active)
-      }
-      img.addEventListener("click", () => {
-        debugger
-        document.querySelector(Selector).value = "";
-        if (Selector == ".personNO") {
-          this.param.personNO = ""
-        }
-        if (Selector == ".personName") {
-          this.param.personName = ""
-        }
-        document.body.classList.remove(active)
-      })
+    clear(val) {
+      this.param[val] = null;
     },
 
-    onRowSelected(items) { },
     advanceSearch(val) {
       this.searchTerm = val;
     },
+
     onDeselectingOrg() {
       if (!this.param.orgId) {
         this.getSystemDep();
       }
     },
+
     withPopper(dropdownList, component, { width }) {
       dropdownList.style.width = width
       const popper = createPopper(component.$refs.toggle, dropdownList, {
@@ -439,9 +425,6 @@ export default {
       return () => popper.destroy()
     },
   },
-  directives: {
-    ResetX
-  },
 }
 </script>
 <style lang="scss">
@@ -453,9 +436,6 @@ export default {
   width: 70% !important;
 }
 
-// table.b-table[aria-busy="false"] {
-//   width: max-content !important;
-// }
 .table.b-table>tbody>.table-active,
 .table.b-table>tbody>.table-active>th,
 .table.b-table>tbody>.table-active>td {
@@ -492,32 +472,6 @@ body {
   border-top-style: solid;
   border-bottom-style: none;
   box-shadow: 0 -3px 6px rgba(0, 0, 0, 0.15);
-}
-
-.imgPersonNO {
-  display: none;
-}
-
-.imgPersonName {
-  display: none;
-}
-
-.activePersonNO .imgPersonNO {
-  position: absolute;
-  margin-top: -30px;
-  margin-left: 230px;
-  display: block;
-  right: 20px;
-  color: #6e6b7b;
-}
-
-.activePersonName .imgPersonName {
-  right: 26px;
-  position: absolute;
-  margin-top: -30px;
-  display: block;
-  right: 20px;
-  color: #6e6b7b;
 }
 
 @media screen and (max-width: 1405px) {

@@ -4,13 +4,13 @@ export default [
       name: 'shift-list',
       component: () => import('@/views/manage/manage-shift-list/ManageShiftList.vue'),
       meta: {
-        pageTitle: 'Danh Sách Ca Làm',
+        pageTitle: 'shiftList',
         breadcrumb: [
           {
-            text: 'Quản Lý',
+            text: 'manage',
           },
           {
-            text: 'Danh Sách Ca Làm',
+            text: 'shiftList',
             active: true,
           },
         ],

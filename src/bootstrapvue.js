@@ -1,10 +1,11 @@
 
-import { BOverlay,BSidebar, BDropdown, BDropdownItem, BSpinner, BPagination, BCol, BTable, BRow, BButton, VBToggle, BCard, BFormSelect, BFormInput, BFormGroup, BFormDatepicker } from "bootstrap-vue";
+import { BBadge, BOverlay,BSidebar, BDropdown, BDropdownItem, BSpinner, BPagination, BCol, BTable, BRow, BButton, VBToggle, BCard, BFormSelect, BFormInput, BFormGroup, BFormDatepicker } from "bootstrap-vue";
 import vSelect from "vue-select";
 import FormInput from '@/views/components/common/FormInput.vue'
 
 export default function bootStrapVue(Vue){
     Vue.component('BCol', BCol)
+    Vue.component('BBadge', BBadge)
     Vue.component('BRow', BRow)
     Vue.component('BButton', BButton)
     Vue.component('VBToggle', VBToggle)

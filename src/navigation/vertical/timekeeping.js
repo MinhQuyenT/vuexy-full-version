@@ -3,32 +3,32 @@ export default [
     header: 'keeping',
   },
   {
-    title: 'Chấm công ngày',
+    title: 'timekeepingDay',
     route: 'timekeeping-day',
     icon: 'CheckSquareIcon',
   },
   {
-    title: 'Tra cứu dữ liệu chấm công',
+    title: 'timekeepingDataSearch',
     route: 'data-search',
     icon: 'SearchIcon',
   },
   {
-    title: 'Chấm công tháng',
+    title: 'timekeepingMonth',
     route: 'timekeeping-month',
     icon: 'EditIcon',
   },
   {
-    title: 'Đồng bộ dữ liệu IT',
+    title: 'dataSynchronizationIt',
     route: 'data-synchronization-it',
     icon: 'CloudDrizzleIcon',
   },
   {
-    title: 'Đồng bộ dữ liệu',
+    title: 'dataSynchronization',
     route: 'data-synchronization',
     icon: 'DatabaseIcon',
   },
   {
-    title: 'Sửa mã số thẻ',
+    title: 'modifyCard',
     route: 'modify-card-number',
     icon: 'CalendarIcon',
   },

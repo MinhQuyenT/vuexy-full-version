@@ -1,13 +1,7 @@
 <template>
-  <b-card
-    v-if="data"
-    no-body
-    class="card-revenue-budget"
-  >
+  <b-card v-if="data" no-body class="card-revenue-budget">
     <b-row class="mx-0">
-      <b-col
-        class="revenue-report-wrapper"
-      >
+      <b-col class="revenue-report-wrapper">
         <div class="d-sm-flex justify-content-between align-items-center mb-3">
           <h4 class="card-title mb-50 mb-sm-0">
             Chi tiết từng bộ phận
@@ -25,13 +19,8 @@
         </div>
 
         <!-- chart -->
-        <vue-apex-charts
-          id="revenue-report-chart"
-          type="bar"
-          height="230"
-          :options="data.chartOptions"
-          :series="data.series"
-        />
+        <vue-apex-charts id="revenue-report-chart" type="bar" height="230" :options="data.chartOptions"
+          :series="data.series" />
       </b-col>
 
 
@@ -60,7 +49,7 @@ export default {
   props: {
     data: {
       type: Object,
-      default: () => {},
+      default: () => { },
     },
   },
   data() {

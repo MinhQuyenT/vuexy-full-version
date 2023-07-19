@@ -3,22 +3,22 @@ export default [
       header: 'system',
     },
     {
-      title: 'Danh sách tài khoản',
+      title: 'accountList',
       route: 'account-list',
       icon: 'CalendarIcon',
     },
     {
-      title: 'Quyền hạn tài khoản',
+      title: 'accountPermissions',
       route: 'account-permissions',
       icon: 'UserCheckIcon',
     },
     {
-      title: 'Cấu hình',
+      title: 'config',
       route: 'config',
       icon: 'SettingsIcon',
     },
     {
-      title: 'Thông tin server',
+      title: 'serverInfo',
       route: 'server-info',
       icon: 'ServerIcon',
     },

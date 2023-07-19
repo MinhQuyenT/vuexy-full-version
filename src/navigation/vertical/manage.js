@@ -3,7 +3,7 @@ export default [
         header: 'manage',
     },
     {
-        title: 'Danh sách ca làm',
+        title: 'shiftList',
         route: 'shift-list',
         icon: 'ListIcon',
     },

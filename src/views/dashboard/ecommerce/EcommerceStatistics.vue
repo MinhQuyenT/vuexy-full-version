@@ -1,43 +1,17 @@
 <template>
-  <b-card
-    v-if="data"
-    no-body
-    class="card-statistics"
-  >
+  <b-card v-if="data" no-body class="card-statistics">
     <b-card-header>
-      <b-card-title>Thông tin chấm công</b-card-title>
-      <b-col
-        md="3"
-      >
-        <b-dropdown
-          v-model="yearVal"
-          :text="yearVal"
-          size="sm"
-          class="budget-dropdown mr-2"
-          variant="outline-primary"
-          split
-          @click.native="changeYear"
-        >
-          <b-dropdown-item
-            v-for="year in years"
-            :key="year"
-          >
+      <b-card-title>{{ $t('timekeepingInfo') }}</b-card-title>
+      <b-col md="3">
+        <b-dropdown v-model="yearVal" :text="yearVal" size="sm" class="budget-dropdown mr-2" variant="outline-primary"
+          split @click.native="changeYear">
+          <b-dropdown-item v-for="year in years" :key="year">
             {{ year }}
           </b-dropdown-item>
         </b-dropdown>
-        <b-dropdown
-          v-model="monthVal"
-          :text="monthVal"
-          size="sm"
-          class="budget-dropdown"
-          variant="outline-primary"
-          split
-          @click.native="changeMonth"
-        >
-          <b-dropdown-item
-            v-for="month in months"
-            :key="month"
-          >
+        <b-dropdown v-model="monthVal" :text="monthVal" size="sm" class="budget-dropdown" variant="outline-primary" split
+          @click.native="changeMonth">
+          <b-dropdown-item v-for="month in months" :key="month">
             {{ month }}
           </b-dropdown-item>
         </b-dropdown>
@@ -45,26 +19,11 @@
     </b-card-header>
     <b-card-body class="statistics-body">
       <b-row>
-        <b-col
-          v-for="item in data"
-          :key="item.icon"
-          xl="3"
-          sm="6"
-          :class="item.customClass"
-        >
+        <b-col v-for="item in data" :key="item.icon" xl="3" sm="6" :class="item.customClass">
           <b-media no-body>
-            <b-media-aside
-
-              class="mr-2"
-            >
-              <b-avatar
-                size="48"
-                :variant="item.color"
-              >
-                <feather-icon
-                  size="24"
-                  :icon="item.icon"
-                />
+            <b-media-aside class="mr-2">
+              <b-avatar size="48" :variant="item.color">
+                <feather-icon size="24" :icon="item.icon" />
               </b-avatar>
             </b-media-aside>
             <b-media-body class="my-auto">
@@ -98,7 +57,7 @@ import {
   BDropdown,
   BDropdownItem,
 } from 'bootstrap-vue'
-
+import { useUtils as useI18nUtils } from '@core/libs/i18n'
 export default {
   components: {
     BDropdownItem,
@@ -125,14 +84,16 @@ export default {
   },
   data() {
     return {
+      t:null,
       yearVal: '2023',
       monthVal: '4',
     }
   },
   mounted() {
+    // this.t = useI18nUtils()
     const d = new Date()
-    this.yearVal(d.getFullYear())
-    this.monthVal(d.getMonth())
+    this.yearVal = d.getFullYear().toString()
+    this.monthVal = d.getMonth().toString()
   },
   methods: {
     change() {
@@ -151,7 +112,7 @@ export default {
     },
     changeMonth(val) {
       this.monthVal = val.target.innerText.trim(),
-      this.change()
+        this.change()
     },
   },
 }

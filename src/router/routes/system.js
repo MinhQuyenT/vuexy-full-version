@@ -4,13 +4,13 @@ export default [
       name: 'account-list',
       component: () => import('@/views/system/account-list/AccountList.vue'),
       meta: {
-        pageTitle: 'Danh Sách Tài Khoản',
+        pageTitle: 'accountList',
         breadcrumb: [
           {
-            text: 'Hệ Thống',
+            text: 'system',
           },
           {
-            text: 'Danh Sách Tài Khoản',
+            text: 'accountList',
             active: true,
           },
         ],
@@ -21,13 +21,14 @@ export default [
       name: 'account-permissions',
       component: () => import('@/views/system/account-permissions/AccountPermissions.vue'),
       meta: {
-        pageTitle: 'Quyền Hạn Tài Khoản',
+        pageTitle: 'accountPermissions',
         breadcrumb: [
           {
-            text: 'Hệ Thống',
+            text: 'system',
           },
           {
-            text: 'Quyền Hạn Tài Khoản',
+            text: 'accountPermissions',
+            text: 'accountPermissions',
             active: true,
           },
         ],
@@ -38,13 +39,13 @@ export default [
       name: 'config',
       component: () => import('@/views/system/config/Config.vue'),
       meta: {
-        pageTitle: 'Cấu Hình',
+        pageTitle: 'config',
         breadcrumb: [
           {
-            text: 'Hệ Thống',
+            text: 'system',
           },
           {
-            text: 'Cấu Hình',
+            text: 'config',
             active: true,
           },
         ],
@@ -55,13 +56,13 @@ export default [
       name: 'server-info',
       component: () => import('@/views/system/server-info/ServerInfo.vue'),
       meta: {
-        pageTitle: 'Thông Tin Server',
+        pageTitle: 'serverInfo',
         breadcrumb: [
           {
-            text: 'Hệ Thống',
+            text: 'system',
           },
           {
-            text: 'Thông Tin Server',
+            text: 'serverInfo',
             active: true,
           },
         ],
